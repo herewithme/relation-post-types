@@ -9,17 +9,15 @@ Stable tag: 1.0.3
 == Description ==
 
 WordPress 3.0 and up allow to manage new custom post type. Cool !
-This plugin allow to build relation between 2 custom types, very useful for related content.
+This plugin allow to build relation between 2 custom types, very useful for manage related content.
 
-For full info go the [ ===
-Cont](http://redmine.beapi.fr/projects/show/relations-post-types) page.
+For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
 
 == Installation ==
 
 1. Download, unzip and upload to your WordPress plugins directory
 2. Activate the plugin within you WordPress Administration Backend
-3. Go to Settings >  ===
-Cont and follow the steps on the [Simple Custom Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
+3. Go to Settings > Relations Post Types and follow the steps on the [Simple Custom Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
 
 == Changelog ==
 
