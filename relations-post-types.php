@@ -80,7 +80,7 @@ function initRelationPostTypes() {
 	global $relations_post_types;
 	
 	// Load translations
-	load_plugin_textdomain ( 'relation-post-types', false, RPT_FOLDER . 'languages' );
+	load_plugin_textdomain ( 'relation-post-types', false, RPT_FOLDER . '/languages' );
 	
 	// Client
 	$relations_post_types['client-base']  = new RelationPostTypes_Client();
