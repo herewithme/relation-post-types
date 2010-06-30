@@ -43,7 +43,7 @@ class RelationPostTypes_Admin {
 	 * @author Amaury Balmer
 	 */
 	function addMenu() {
-		add_options_page( __('Relations post types', 'relation-post-type'), __('Relations', 'relation-post-type'), 'manage_options', $this->admin_slug, array( &$this, 'pageManage' ) );
+		add_options_page( __('Relations post types', 'relation-post-types'), __('Relations', 'relation-post-types'), 'manage_options', $this->admin_slug, array( &$this, 'pageManage' ) );
 	}
 	
 	/**
@@ -61,20 +61,20 @@ class RelationPostTypes_Admin {
 		?>
 		<div class="wrap">
 			<?php screen_icon(); ?>
-			<h2><?php _e("Relations post types : Settings", 'relation-post-type'); ?></h2>
+			<h2><?php _e("Relations post types : Settings", 'relation-post-types'); ?></h2>
 			
 			<div class="message updated">
-				<p><?php _e('<strong>Warning :</strong> Check or uncheck relations between 2 post types will not delete relations on DB.', 'relation-post-type'); ?></p>
+				<p><?php _e('<strong>Warning :</strong> Check or uncheck relations between 2 post types will not delete relations on DB.', 'relation-post-types'); ?></p>
 			</div>
 			
-			<p><?php _e('Instructions for use: lines correspond to each page of edition of the post type, you can show the box of relations with others contents by checking the columns of your choice', 'relation-post-type'); ?></p>
+			<p><?php _e('Instructions for use: lines correspond to each page of edition of the post type, you can show the box of relations with others contents by checking the columns of your choice', 'relation-post-types'); ?></p>
 			
 			<form action="" method="post">
 				<div id="col-container">
 					<table class="widefat tag fixed" cellspacing="0">
 						<thead>
 							<tr>
-								<th scope="col" id="label" class="manage-column column-name"><?php _e('Custom types', 'relation-post-type'); ?></th>
+								<th scope="col" id="label" class="manage-column column-name"><?php _e('Custom types', 'relation-post-types'); ?></th>
 								<?php
 								foreach ( get_post_types( array(), 'objects' ) as $post_type ) {
 									if ( !$post_type->show_ui || empty($post_type->labels->name) )
@@ -87,7 +87,7 @@ class RelationPostTypes_Admin {
 						</thead>
 						<tfoot>
 							<tr>
-								<th scope="col" class="manage-column column-name"><?php _e('Custom types', 'relation-post-type'); ?></th>
+								<th scope="col" class="manage-column column-name"><?php _e('Custom types', 'relation-post-types'); ?></th>
 								<?php
 								foreach ( get_post_types( array(), 'objects' ) as $post_type ) {
 									if ( !$post_type->show_ui || empty($post_type->labels->name) )
@@ -136,7 +136,7 @@ class RelationPostTypes_Admin {
 				
 					<p class="submit">
 						<?php wp_nonce_field( 'save-relations-settings' ); ?>
-						<input class="button-primary" name="save-relations" type="submit" value="<?php _e('Save relations', 'relation-post-type'); ?>" />
+						<input class="button-primary" name="save-relations" type="submit" value="<?php _e('Save relations', 'relation-post-types'); ?>" />
 					</p>
 				</form>
 			</div><!-- /col-container -->
@@ -161,7 +161,7 @@ class RelationPostTypes_Admin {
 					$relations[$post_type][] = $sub_post_type;
 			}
 			
-			$this->message = __('Relations updated with success !', 'relation-post-type');
+			$this->message = __('Relations updated with success !', 'relation-post-types');
 
 			update_option( RPT_OPTION, $relations );
 		}
