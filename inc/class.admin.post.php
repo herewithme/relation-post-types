@@ -145,7 +145,7 @@ class RelationPostTypes_Admin_Post {
 		$get_posts = new WP_Query;
 		$posts = $get_posts->query( $args );
 		if ( ! $get_posts->post_count ) {
-			echo '<p>' . __( 'No items.', 'relation-post-type' ) . '</p>';
+			echo '<p>' . __( 'No items.', 'relation-post-types' ) . '</p>';
 			return;
 		}
 		
