@@ -5,15 +5,15 @@
  * @package default
  * @author Amaury Balmer
  */
-class RelationsPostTypes_Widget extends WP_Widget {
+class RelationPostTypes_Widget extends WP_Widget {
 	/**
 	 * Constructor
 	 *
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function RelationsPostTypes_Widget() {
-		$this->WP_Widget( 'relation-posttypes', __('Relations Content Widget', 'relations-post-types'), array( 'classname' => 'relation-posttypes-widget', 'description' => __('Display related content for one or each post type single view.', 'relations-post-types') ) );
+	function RelationPostTypes_Widget() {
+		$this->WP_Widget( 'relation-posttypes', __('Relations Content Widget', 'relation-post-type'), array( 'classname' => 'relation-posttypes-widget', 'description' => __('Display related content for one or each post type single view.', 'relation-post-type') ) );
 	}
 	
 	/**
@@ -64,7 +64,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		
 		if ( !$items_query->have_posts()  ) {
-			echo '<p class="no-result">'.__('No items actually for this custom type.', 'relations-post-types').'</p>';
+			echo '<p class="no-result">'.__('No items actually for this custom type.', 'relation-post-type').'</p>';
 		} else {
 			echo '<ul class="relations-list">' . "\n";
 			
@@ -106,7 +106,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 	 */
 	function form( $instance ) {
 		$defaults = array(
-			'title' 	=> __('Related content', 'relations-post-types'),
+			'title' 	=> __('Related content', 'relation-post-type'),
 			'post_type' => 'all',
 			'orderby' 	=> 'post_date',
 			'order' 	=> 'DESC',
@@ -115,14 +115,14 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $defaults );
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title', 'relations-post-types'); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title', 'relation-post-type'); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $instance['title']; ?>" style="width:100%;" />
 		</p>
 		
 		<p>
-			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e('What to show', 'relations-post-types'); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e('What to show', 'relation-post-type'); ?>:</label>
 			<select id="<?php echo $this->get_field_id( 'post_type' ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>" style="width:100%;">
-				<option value="all"><?php _e('All', 'relations-post-types'); ?></option>
+				<option value="all"><?php _e('All', 'relation-post-type'); ?></option>
 				<?php
 				foreach ( get_post_types( array(), 'objects' ) as $post_type ) {
 					if ( !$post_type->show_ui || empty($post_type->labels->name) )
@@ -135,10 +135,10 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		</p>
 		
 		<p>
-			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e("Order on which field ?", 'relations-post-types'); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e("Order on which field ?", 'relation-post-type'); ?>:</label>
 			<select id="<?php echo $this->get_field_id( 'orderby' ); ?>" name="<?php echo $this->get_field_name( 'orderby' ); ?>" style="width:100%;">
 				<?php
-				foreach( array('post_date' => __('Date', 'relations-post-types'), 'ID' => __('ID', 'relations-post-types'), 'post_title' => __('Title', 'relations-post-types') ) as $optval => $option ) {
+				foreach( array('post_date' => __('Date', 'relation-post-type'), 'ID' => __('ID', 'relation-post-type'), 'post_title' => __('Title', 'relation-post-type') ) as $optval => $option ) {
 					echo '<option '.selected( $instance['orderby'], $optval, false ).' value="'.esc_attr($optval).'">'.esc_html($option).'</option>';
 				}
 				?>
@@ -146,10 +146,10 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		</p>
 		
 		<p>
-			<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e("Order by ?", 'relations-post-types'); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e("Order by ?", 'relation-post-type'); ?>:</label>
 			<select id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>" style="width:100%;">
 				<?php
-				foreach( array('ASC' => __('Ascending', 'relations-post-types'), 'DESC' => __('Descending', 'relations-post-types') ) as $optval => $option ) {
+				foreach( array('ASC' => __('Ascending', 'relation-post-type'), 'DESC' => __('Descending', 'relation-post-type') ) as $optval => $option ) {
 					echo '<option '.selected( $instance['order'], $optval, false ).' value="'.esc_attr($optval).'">'.esc_html($option).'</option>';
 				}
 				?>
@@ -157,7 +157,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		</p>
 		
 		<p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e("Number of items to show", 'relations-post-types'); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e("Number of items to show", 'relation-post-type'); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" value="<?php echo (int) $instance['number']; ?>" style="width:100%;" />
 		</p>
 	<?php

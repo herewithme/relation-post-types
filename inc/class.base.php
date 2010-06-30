@@ -1,12 +1,12 @@
 <?php
-class RelationsPostTypes_Base {
+class RelationPostTypes_Base {
 	/**
 	 * Empty constructor.
 	 *
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function RelationsPostTypes_Base() {}
+	function RelationPostTypes_Base() {}
 	
 	/**
 	 * Try to create the table during the installation

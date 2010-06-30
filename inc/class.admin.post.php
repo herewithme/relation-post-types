@@ -1,11 +1,11 @@
 <?php
-class RelationsPostTypes_Admin_Post {
+class RelationPostTypes_Admin_Post {
 	/**
 	 * Constructor
 	 *
 	 * @return boolean
 	 */
-	function RelationsPostTypes_Admin_Post() {
+	function RelationPostTypes_Admin_Post() {
 		// Save taxo datas
 		add_action( 'save_post', array(&$this, 'saveObjectRelations'), 10, 2 );
 		
@@ -145,7 +145,7 @@ class RelationsPostTypes_Admin_Post {
 		$get_posts = new WP_Query;
 		$posts = $get_posts->query( $args );
 		if ( ! $get_posts->post_count ) {
-			echo '<p>' . __( 'No items.', 'relations-post-types' ) . '</p>';
+			echo '<p>' . __( 'No items.', 'relation-post-type' ) . '</p>';
 			return;
 		}
 		

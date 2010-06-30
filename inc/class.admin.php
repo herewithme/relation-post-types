@@ -1,5 +1,5 @@
 <?php
-class RelationsPostTypes_Admin {
+class RelationPostTypes_Admin {
 	var $admin_url 	= '';
 	var $admin_slug = 'relations-posttypes-settings';
 	
@@ -13,7 +13,7 @@ class RelationsPostTypes_Admin {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function RelationsPostTypes_Admin() {
+	function RelationPostTypes_Admin() {
 		$this->admin_url = admin_url( 'options-general.php?page='.$this->admin_slug );
 		
 		// Register hooks
@@ -32,7 +32,7 @@ class RelationsPostTypes_Admin {
 		global $pagenow;
 		
 		if ( in_array( $pagenow, array('post.php', 'post-new.php') ) ) {
-			wp_enqueue_style ( 'simple-custom-types', RPT_URL.'/ressources/admin.css', array(), RPT_VERSION );
+			wp_enqueue_style ( 'relations-post-types', RPT_URL.'/ressources/admin.css', array(), RPT_VERSION );
 		}
 	}
 	
@@ -43,7 +43,7 @@ class RelationsPostTypes_Admin {
 	 * @author Amaury Balmer
 	 */
 	function addMenu() {
-		add_options_page( __('Relations post types', 'relations-post-types'), __('Relations', 'relations-post-types'), 'manage_options', $this->admin_slug, array( &$this, 'pageManage' ) );
+		add_options_page( __('Relations post types', 'relation-post-type'), __('Relations', 'relation-post-type'), 'manage_options', $this->admin_slug, array( &$this, 'pageManage' ) );
 	}
 	
 	/**
@@ -61,20 +61,20 @@ class RelationsPostTypes_Admin {
 		?>
 		<div class="wrap">
 			<?php screen_icon(); ?>
-			<h2><?php _e("Relations post types : Settings", 'relations-post-types'); ?></h2>
+			<h2><?php _e("Relations post types : Settings", 'relation-post-type'); ?></h2>
 			
 			<div class="message updated">
-				<p><?php _e('<strong>Warning :</strong> Check or uncheck relations between 2 post types will not delete relations on DB.', 'relations-post-types'); ?></p>
+				<p><?php _e('<strong>Warning :</strong> Check or uncheck relations between 2 post types will not delete relations on DB.', 'relation-post-type'); ?></p>
 			</div>
 			
-			<p><?php _e('Instructions for use: lines correspond to each page of edition of the post type, you can show the box of relations with others contents by checking the columns of your choice', 'relations-post-types'); ?></p>
+			<p><?php _e('Instructions for use: lines correspond to each page of edition of the post type, you can show the box of relations with others contents by checking the columns of your choice', 'relation-post-type'); ?></p>
 			
 			<form action="" method="post">
 				<div id="col-container">
 					<table class="widefat tag fixed" cellspacing="0">
 						<thead>
 							<tr>
-								<th scope="col" id="label" class="manage-column column-name"><?php _e('Custom types', 'relations-post-types'); ?></th>
+								<th scope="col" id="label" class="manage-column column-name"><?php _e('Custom types', 'relation-post-type'); ?></th>
 								<?php
 								foreach ( get_post_types( array(), 'objects' ) as $post_type ) {
 									if ( !$post_type->show_ui || empty($post_type->labels->name) )
@@ -87,7 +87,7 @@ class RelationsPostTypes_Admin {
 						</thead>
 						<tfoot>
 							<tr>
-								<th scope="col" class="manage-column column-name"><?php _e('Custom types', 'relations-post-types'); ?></th>
+								<th scope="col" class="manage-column column-name"><?php _e('Custom types', 'relation-post-type'); ?></th>
 								<?php
 								foreach ( get_post_types( array(), 'objects' ) as $post_type ) {
 									if ( !$post_type->show_ui || empty($post_type->labels->name) )
@@ -136,7 +136,7 @@ class RelationsPostTypes_Admin {
 				
 					<p class="submit">
 						<?php wp_nonce_field( 'save-relations-settings' ); ?>
-						<input class="button-primary" name="save-relations" type="submit" value="<?php _e('Save relations', 'relations-post-types'); ?>" />
+						<input class="button-primary" name="save-relations" type="submit" value="<?php _e('Save relations', 'relation-post-type'); ?>" />
 					</p>
 				</form>
 			</div><!-- /col-container -->
@@ -161,7 +161,7 @@ class RelationsPostTypes_Admin {
 					$relations[$post_type][] = $sub_post_type;
 			}
 			
-			$this->message = __('Relations updated with success !', 'relations-post-types');
+			$this->message = __('Relations updated with success !', 'relation-post-type');
 
 			update_option( RPT_OPTION, $relations );
 		}

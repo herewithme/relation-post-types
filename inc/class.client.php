@@ -1,12 +1,12 @@
 <?php
-class RelationsPostTypes_Client {
+class RelationPostTypes_Client {
 	/**
 	 * Constructor, register hooks
 	 *
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function RelationsPostTypes_Client() {
+	function RelationPostTypes_Client() {
 		// Delete post
 		add_action( 'delete_post', array(&$this, 'deletePost') );
 	}
