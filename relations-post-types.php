@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Relation Post Types
+Plugin Name: Relations Post Types
 Version: 1.0.4
 Plugin URI: http://redmine.beapi.fr/projects/show/relations-post-types
 Description: Allow to build relations between 2 custom types.
@@ -43,9 +43,9 @@ global $wpdb;
 $wpdb->relations = $wpdb->prefix . 'posts_relations';
 
 // Folder name
-define ( 'RPT_VERSION', '1.0.3' );
-define ( 'RPT_OPTION',  'relation-post-types' );
-define ( 'RPT_FOLDER',  'relation-post-types' );
+define ( 'RPT_VERSION', '1.0.4' );
+define ( 'RPT_OPTION',  'relations-post-types' );
+define ( 'RPT_FOLDER',  'relations-post-types' );
 
 // mu-plugins or regular plugins ?
 if ( is_dir(WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER ) ) {
@@ -72,26 +72,26 @@ if ( is_admin() ) { // Call admin class
 }
 
 // Activate/Desactive Relation Post Types
-register_activation_hook  ( __FILE__, array('RelationPostTypes_Base', 'activate') );
-register_deactivation_hook( __FILE__, array('RelationPostTypes_Base', 'deactivate') );
+register_activation_hook  ( __FILE__, array('RelationsPostTypes_Base', 'activate') );
+register_deactivation_hook( __FILE__, array('RelationsPostTypes_Base', 'deactivate') );
 
-add_action( 'plugins_loaded', 'initRelationPostTypes' );
-function initRelationPostTypes() {
+add_action( 'plugins_loaded', 'initRelationsPostTypes' );
+function initRelationsPostTypes() {
 	global $relations_post_types;
 	
 	// Load translations
-	load_plugin_textdomain ( 'relation-post-types', false, RPT_FOLDER . '/languages' );
+	load_plugin_textdomain ( 'relations-post-types', false, RPT_FOLDER . 'languages' );
 	
 	// Client
-	$relations_post_types['client-base']  = new RelationPostTypes_Client();
+	$relations_post_types['client-base']  = new RelationsPostTypes_Client();
 	
 	// Admin
 	if ( is_admin() ) {
-		$relations_post_types['admin-base'] = new RelationPostTypes_Admin();
-		$relations_post_types['admin-post'] = new RelationPostTypes_Admin_Post();
+		$relations_post_types['admin-base'] = new RelationsPostTypes_Admin();
+		$relations_post_types['admin-post'] = new RelationsPostTypes_Admin_Post();
 	}
 	
 	// Widget
-	add_action( 'widgets_init', create_function('', 'return register_widget("RelationPostTypes_Widget");') );
+	add_action( 'widgets_init', create_function('', 'return register_widget("RelationsPostTypes_Widget");') );
 }
 ?>

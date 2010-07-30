@@ -35,28 +35,31 @@ class RelationPostTypes_Admin_Post {
 			return false;
 			
 		// All tag-style post taxonomies
-		foreach ( $current_options[$post_type] as $_post_type ) {
+		foreach ( $current_options as $current_post_type => $_post_types ) {
+			foreach( $_post_types as $_post_type ) {
+				if ( $_post_type != $post_type )
+					continue;
 			
-			if ( isset($_POST['relations'][$_post_type] ) ) {
+				if ( isset($_POST['relations'][$current_post_type] ) ) {
 				
-				if ( $_POST['relations'][$_post_type] === '-' ) { // Use by HTML Select
+					if ( $_POST['relations'][$current_post_type] === '-' ) { // Use by HTML Select
 					
-					rpt_delete_object_relation( $post_ID, array($_post_type) );
+						rpt_delete_object_relation( $post_ID, array($current_post_type) );
 					
-				} else {
+					} else {
 					
-					// Secure datas
-					if ( is_array($_POST['relations'][$_post_type]) )
-						$_POST['relations'][$_post_type] = array_map( 'intval', $_POST['relations'][$_post_type] );
-					else
-						$_POST['relations'][$_post_type] = (int) $_POST['relations'][$_post_type];
+						// Secure datas
+						if ( is_array($_POST['relations'][$current_post_type]) )
+							$_POST['relations'][$current_post_type] = array_map( 'intval', $_POST['relations'][$current_post_type] );
+						else
+							$_POST['relations'][$current_post_type] = (int) $_POST['relations'][$current_post_type];
 					
-					rpt_delete_object_relation( $post_ID, array($_post_type) );
-					rpt_set_object_relation( $post_ID, $_POST['relations'][$_post_type], $_post_type, false );
+						rpt_delete_object_relation( $post_ID, array($current_post_type) );
+						rpt_set_object_relation( $post_ID, $_POST['relations'][$current_post_type], $current_post_type, false );
 					
+					}
 				}
 			}
-			
 		}
 		
 		return true;
@@ -74,43 +77,44 @@ class RelationPostTypes_Admin_Post {
 		// Prepare admin type for each relations box !
 		$current_options = get_option( RPT_OPTION );
 		
-		// No relations for this post type ?
-		if ( !isset($current_options[$post_type] ) )
-			return false;
 		
 		// All tag-style post taxonomies
-		foreach ( $current_options[$post_type] as $_post_type ) {
-			
-			// Get post type data block
-			$_post_type = get_post_type_object( $_post_type );
-			
-			// Dispatch admin block
-			$ad_type = 'default';
-			
-			// Display meta box
-			switch( $ad_type ) {
-				/*
-				case 'select' : // Custom single selector
-					add_meta_box( 'relationsdiv-' . $tax_name, $label, array(&$this, 'post_select_meta_box'), $post_type, 'side', 'default', array( 'post_type' => $_post_type ) );
-					break;
+		foreach ( $current_options as $current_post_type => $_post_types ) {
+			foreach( $_post_types as $_post_type ) {
+				if ( $_post_type != $post_type )
+					continue;
+					
+				// Get post type data block
+				$current_post_type = get_post_type_object( $current_post_type );
 				
-				case 'select-multi' : // Custom multiple selector
-					add_meta_box( 'relationsdiv-' . $tax_name, $label, array(&$this, 'post_select_multi_meta_box'), $post_type, 'side', 'default', array( 'post_type' => $_post_type ) );
-					break;
-				*/
+				// Dispatch admin block
+				$ad_type = 'default';
 				
-				case 'default' : // Default
-				default :
-					add_meta_box( 'relationsdiv-' . $_post_type->name, $_post_type->labels->name, array(&$this, 'menu_item_post_type_meta_box'), $post_type, 'side', 'default', $_post_type );
-					break;
+				// Display meta box
+				switch( $ad_type ) {
+					/*
+					case 'select' : // Custom single selector
+						add_meta_box( 'relationsdiv-' . $tax_name, $label, array(&$this, 'post_select_meta_box'), $post_type, 'side', 'default', array( 'post_type' => $_post_type ) );
+						break;
+					
+					case 'select-multi' : // Custom multiple selector
+						add_meta_box( 'relationsdiv-' . $tax_name, $label, array(&$this, 'post_select_multi_meta_box'), $post_type, 'side', 'default', array( 'post_type' => $_post_type ) );
+						break;
+					*/
+					
+					case 'default' : // Default
+					default :
+						add_meta_box( 'relationsdiv-' . $current_post_type->name, $current_post_type->labels->name, array(&$this, 'menu_item_post_type_meta_box'), $post_type, 'side', 'default', $current_post_type );
+						break;
+				}
+				
+				// Try to free memory !
+				unset($_post_type, $ad_type);
+			
 			}
-			
-			// Try to free memory !
-			unset($_post_type, $ad_type);
-			
-			return true;
 		}
-		return false;
+		
+		return true;
 	}
 	
 	/**
