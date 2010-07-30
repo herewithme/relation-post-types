@@ -32,7 +32,7 @@ class Walker_Relations_Checklist extends Walker_Relations_Menu  {
 			} elseif ( !empty($item->post_name) ) {
 				$output .= esc_html( $item->post_name );
 			} else { 
-				$output .= esc_html( sprintf(__('Item %d', 'relation-post-types'), $item->ID) );
+				$output .= esc_html( sprintf(__('Item %d', 'relations-post-types'), $item->ID) );
 			}
 		$output .= '</label>';
 	}

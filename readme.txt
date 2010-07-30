@@ -1,7 +1,7 @@
 === Relations Post Types ===
 Contributors: momo360modena
 Donate link: http://www.beapi.fr/donate/
-Tags : custom, post types, cms, post type, relations, related, content, related content
+Tags : custom, post types, cms, post type
 Requires at least: 3.0
 Tested up to: 3.0
 Stable tag: 1.0.4
@@ -9,21 +9,20 @@ Stable tag: 1.0.4
 == Description ==
 
 WordPress 3.0 and up allow to manage new custom post type. Cool !
-This plugin allow to build relations between objects of 2 custom types, very useful for manage related content.
+This plugin allow to build relation between 2 custom types, very useful for manage related content.
 
-For full info go the [Relation Post Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
+For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
 
 == Installation ==
 
 1. Download, unzip and upload to your WordPress plugins directory
 2. Activate the plugin within you WordPress Administration Backend
-3. Go to Settings > Relation Post Types and follow the steps on the [Relation Post Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
+3. Go to Settings > Relations Post Types and follow the steps on the [Simple Custom Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
 
 == Changelog ==
 
 * Version 1.0.4 :
-	* Remove "S" to Relation for correspondance WP.org
-	* Update POT language + French
+	* Fix generation of metabox on admin. Fix for correspond to description and remove stupid return...
 * Version 1.0.3 :
 	* Fix notices
 	* Allow relations between objects of the same post type
