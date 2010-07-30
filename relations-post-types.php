@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Relations Post Types
-Version: 1.0.4
+Version: 1.0.5
 Plugin URI: http://redmine.beapi.fr/projects/show/relations-post-types
 Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer
@@ -43,7 +43,7 @@ global $wpdb;
 $wpdb->relations = $wpdb->prefix . 'posts_relations';
 
 // Folder name
-define ( 'RPT_VERSION', '1.0.4' );
+define ( 'RPT_VERSION', '1.0.5' );
 define ( 'RPT_OPTION',  'relations-post-types' );
 define ( 'RPT_FOLDER',  'relations-post-types' );
 

@@ -1,11 +1,11 @@
 <?php
-class RelationPostTypes_Admin_Post {
+class RelationsPostTypes_Admin_Post {
 	/**
 	 * Constructor
 	 *
 	 * @return boolean
 	 */
-	function RelationPostTypes_Admin_Post() {
+	function RelationsPostTypes_Admin_Post() {
 		// Save taxo datas
 		add_action( 'save_post', array(&$this, 'saveObjectRelations'), 10, 2 );
 		
