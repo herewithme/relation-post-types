@@ -4,7 +4,7 @@ Donate link: http://www.beapi.fr/donate/
 Tags : custom, post types, cms, post type
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 
 == Description ==
 
@@ -21,6 +21,8 @@ For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/sho
 
 == Changelog ==
 
+* Version 1.0.5 :
+	* Fix renaming class
 * Version 1.0.4 :
 	* Fix generation of metabox on admin. Fix for correspond to description and remove stupid return...
 * Version 1.0.3 :
