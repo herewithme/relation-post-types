@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Relations Post Types
-Version: 1.0.5
+Version: 1.0.6
 Plugin URI: http://redmine.beapi.fr/projects/show/relations-post-types
 Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer
@@ -43,18 +43,34 @@ global $wpdb;
 $wpdb->relations = $wpdb->prefix . 'posts_relations';
 
 // Folder name
-define ( 'RPT_VERSION', '1.0.5' );
+define ( 'RPT_VERSION', '1.0.6' );
 define ( 'RPT_OPTION',  'relations-post-types' );
-define ( 'RPT_FOLDER',  'relations-post-types' );
 
-// mu-plugins or regular plugins ?
-if ( is_dir(WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER ) ) {
-	define ( 'RPT_DIR', WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER );
-	define ( 'RPT_URL', WPMU_PLUGIN_URL . '/' . RPT_FOLDER );
-} else {
-	define ( 'RPT_DIR', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER );
-	define ( 'RPT_URL', WP_PLUGIN_URL . '/' . RPT_FOLDER );
+// Build constants URL.
+function define_rpt_paths_plugin() {
+	$current_plugins = get_option ( 'active_plugins' );
+	foreach ( ( array ) $current_plugins as $plugin ) {
+		if (strpos ( $plugin, basename ( __FILE__ ) ) !== false) {
+			$path = substr ( str_replace ( 'relations-post-types.php', '', $plugin ), 0, - 1 );
+			
+			define ( 'RPT_FOLDER', $path );
+		}
+	}
+	
+	if (! defined ( 'RPT_FOLDER' )) {
+		define ( 'RPT_FOLDER',  'relation-post-types' );
+	}
+
+	// mu-plugins or regular plugins ?
+	if ( is_dir(WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER ) ) {
+		define ( 'RPT_DIR', WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER );
+		define ( 'RPT_URL', WPMU_PLUGIN_URL . '/' . RPT_FOLDER );
+	} else {
+		define ( 'RPT_DIR', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER );
+		define ( 'RPT_URL', WP_PLUGIN_URL . '/' . RPT_FOLDER );
+	}
 }
+define_rpt_paths_plugin();
 
 // Library
 require( RPT_DIR . '/inc/functions.inc.php' );
