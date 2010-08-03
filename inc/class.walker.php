@@ -15,17 +15,14 @@ class Walker_Relations_Checklist extends Walker_Relations_Menu  {
 	 */
 	function start_el(&$output, $item, $depth, $args) {
 		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
-		
-		// Get current items for checked datas.
-		$current_items = rpt_get_object_relation( $args->current_id, array(), 'all' );
-		
+
 		// Clean possible label
 		$item->post_title = trim($item->post_title);
 		$item->post_name  = trim($item->post_name);
-		
+
 		$output .= $indent . '<li>';
 		$output .= '<label class="menu-item-title">';
-			$output .= '<input type="checkbox" '.checked( true, in_array($item->ID, (array) $current_items), false).' class="menu-item-checkbox" name="relations[' . $args->post_type . '][]" value="'. esc_attr( $item->ID ) .'" /> ';
+			$output .= '<input type="checkbox" '.checked( true, in_array($item->ID, (array) $args->current_items), false).' class="menu-item-checkbox" name="relations[' . $args->post_type . '][]" value="'. esc_attr( $item->ID ) .'" /> ';
 			
 			if ( !empty($item->post_title) ) {
 				$output .= esc_html( $item->post_title );

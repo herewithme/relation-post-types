@@ -4,7 +4,7 @@ Donate link: http://www.beapi.fr/donate/
 Tags : custom, post types, cms, post type
 Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 
 == Description ==
 
@@ -21,6 +21,8 @@ For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/sho
 
 == Changelog ==
 
+* Version 1.0.7 :
+	* Fix several bugS during saving relations, get relations.
 * Version 1.0.6 :
 	* Check compatibility with WP 3.0.1
 	* Fix constant construction. (try dynamic method)
