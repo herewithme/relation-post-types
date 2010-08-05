@@ -5,7 +5,7 @@ Plugin URI: http://redmine.beapi.fr/projects/show/relations-post-types
 Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer
 Author URI: http://www.beapi.fr
-Version: 1.0.7
+Version: 1.0.8
 Text Domain: relations-post-types
 Domain Path: /languages/
 Network: false
@@ -46,7 +46,7 @@ global $wpdb;
 $wpdb->relations = $wpdb->prefix . 'posts_relations';
 
 // Folder name
-define ( 'RPT_VERSION', '1.0.7' );
+define ( 'RPT_VERSION', '1.0.8' );
 define ( 'RPT_OPTION',  'relations-post-types' );
 
 // Build constants URL.

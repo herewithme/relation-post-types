@@ -10,7 +10,7 @@ class RelationsPostTypes_Admin_Post {
 		add_action( 'save_post', array(&$this, 'saveObjectRelations'), 10, 2 );
 		
 		// Write post box meta
-		add_action( 'add_meta_boxes', array(&$this, 'initObjectRelations'), 10, 1 );
+		add_action( 'add_meta_boxes', array(&$this, 'initObjectRelations'), 10, 2 );
 		
 		return true;
 	}
@@ -29,30 +29,27 @@ class RelationsPostTypes_Admin_Post {
 		
 		// Prepare admin type for each relations box !
 		$current_options = get_option( RPT_OPTION );
-			
+		
 		// All tag-style post taxonomies
-		foreach ( $current_options as $current_post_type => $_post_types ) {
-			foreach( $_post_types as $_post_type ) {
+		foreach ( (array) $current_options as $current_post_type => $_post_types ) {
+			foreach( (array) $_post_types as $_post_type ) {
 				if ( $_post_type != $post_type )
 					continue;
 				
-				if ( isset($_POST['relations'][$current_post_type] ) ) {
+				if ( isset($_POST['action']) && !isset($_POST['relations'][$current_post_type]) ) {
+
+					rpt_delete_object_relation( $post_ID, array($current_post_type) );
 				
-					if ( $_POST['relations'][$current_post_type] === '-' ) { // Use by HTML Select
-						
-						rpt_delete_object_relation( $post_ID, array($current_post_type) );
-					
-					} else {
-					
-						// Secure datas
-						if ( is_array($_POST['relations'][$current_post_type]) )
-							$_POST['relations'][$current_post_type] = array_map( 'intval', $_POST['relations'][$current_post_type] );
-						else
-							$_POST['relations'][$current_post_type] = (int) $_POST['relations'][$current_post_type];
-						
-						rpt_set_object_relation( $post_ID, $_POST['relations'][$current_post_type], $current_post_type, false );
-					
-					}
+				} elseif ( isset($_POST['relations'][$current_post_type]) ) {
+				
+					// Secure datas
+					if ( is_array($_POST['relations'][$current_post_type]) )
+						$_POST['relations'][$current_post_type] = array_map( 'intval', $_POST['relations'][$current_post_type] );
+					else
+						$_POST['relations'][$current_post_type] = (int) $_POST['relations'][$current_post_type];
+
+					rpt_set_object_relation( $post_ID, $_POST['relations'][$current_post_type], $current_post_type, false );
+				
 				}
 			}
 		}
@@ -64,16 +61,17 @@ class RelationsPostTypes_Admin_Post {
 	 * Add block for each relations in write page for each custom object
 	 *
 	 * @param string $post_type
+	 * @param object $post
 	 * @return boolean
 	 * @author Amaury Balmer
 	 */
-	function initObjectRelations( $post_type = '' ) {
+	function initObjectRelations( $post_type = '', $post = null ) {
 		// Prepare admin type for each relations box !
 		$current_options = get_option( RPT_OPTION );
 
 		// All tag-style post taxonomies
-		foreach ( $current_options as $current_post_type => $_post_types ) {
-			foreach( $_post_types as $_post_type ) {
+		foreach ( (array) $current_options as $current_post_type => $_post_types ) {
+			foreach( (array) $_post_types as $_post_type ) {
 				if ( $_post_type != $post_type )
 					continue;
 					
