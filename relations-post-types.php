@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Relations Post Types
+Plugin Name: Relation Post Types
 Plugin URI: http://redmine.beapi.fr/projects/show/relations-post-types
 Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer

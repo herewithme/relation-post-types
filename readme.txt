@@ -1,4 +1,4 @@
-=== Relations Post Types ===
+=== Relation Post Types ===
 Contributors: momo360modena
 Donate link: http://www.beapi.fr/donate/
 Tags : custom, post types, cms, post type
@@ -17,7 +17,7 @@ For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/sho
 
 1. Download, unzip and upload to your WordPress plugins directory
 2. Activate the plugin within you WordPress Administration Backend
-3. Go to Settings > Relations Post Types and follow the steps on the [Simple Custom Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
+3. Go to Settings > Relations and follow the steps on the [Simple Custom Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
 
 == Changelog ==
 
