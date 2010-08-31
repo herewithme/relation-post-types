@@ -26,7 +26,7 @@ class RelationsPostTypes_Base {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		// Try to create the meta table
-		return maybe_create_table( $wpdb->relations, "CREATE TABLE $wpdb->relations (
+		return maybe_create_table( $wpdb->posts_relations, "CREATE TABLE $wpdb->posts_relations (
 				`id` int(20) NOT NULL auto_increment,
 				`object_id_1` INT( 20 ) NOT NULL,
 				`object_id_2` INT( 20 ) NOT NULL,

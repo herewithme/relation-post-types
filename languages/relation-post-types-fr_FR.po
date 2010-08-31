@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/relation-post-types\n"
-"POT-Creation-Date: 2010-06-30 05:55+0000\n"
-"PO-Revision-Date: 2010-06-30 09:09+0100\n"
+"POT-Creation-Date: 2010-08-31 11:17+0000\n"
+"PO-Revision-Date: 2010-08-31 14:22+0100\n"
 "Last-Translator: Amaury Balmer <amaury@balmer.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -48,11 +48,11 @@ msgstr "Enregistrer les liaisons"
 msgid "Relations updated with success !"
 msgstr "Relations mises à jour avec succès !"
 
-#: inc/class.admin.post.php:148
+#: inc/class.admin.post.php:149
 msgid "No items."
 msgstr "Aucun objet."
 
-#: inc/class.walker.php:35
+#: inc/class.walker.php:32
 #, php-format
 msgid "Item %d"
 msgstr "Objet %d"

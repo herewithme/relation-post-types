@@ -5,7 +5,7 @@ Plugin URI: http://redmine.beapi.fr/projects/show/relations-post-types
 Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer
 Author URI: http://www.beapi.fr
-Version: 1.0.8
+Version: 1.0.9
 Text Domain: relations-post-types
 Domain Path: /languages/
 Network: false
@@ -43,37 +43,15 @@ Todo :
 
 // Setup table name for relations
 global $wpdb;
-$wpdb->relations = $wpdb->prefix . 'posts_relations';
+$wpdb->tables[] 		= 'posts_relations';
+$wpdb->posts_relations 	= $wpdb->prefix . 'posts_relations';
 
 // Folder name
-define ( 'RPT_VERSION', '1.0.8' );
+define ( 'RPT_VERSION', '1.0.9' );
 define ( 'RPT_OPTION',  'relations-post-types' );
 
-// Build constants URL.
-function define_rpt_paths_plugin() {
-	$current_plugins = get_option ( 'active_plugins' );
-	foreach ( ( array ) $current_plugins as $plugin ) {
-		if (strpos ( $plugin, basename ( __FILE__ ) ) !== false) {
-			$path = substr ( str_replace ( 'relations-post-types.php', '', $plugin ), 0, - 1 );
-			
-			define ( 'RPT_FOLDER', $path );
-		}
-	}
-	
-	if (! defined ( 'RPT_FOLDER' )) {
-		define ( 'RPT_FOLDER',  'relation-post-types' ); // Relation without S because WP.org don't have S on slug.
-	}
-
-	// mu-plugins or regular plugins ?
-	if ( is_dir(WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER ) ) {
-		define ( 'RPT_DIR', WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER );
-		define ( 'RPT_URL', WPMU_PLUGIN_URL . '/' . RPT_FOLDER );
-	} else {
-		define ( 'RPT_DIR', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . RPT_FOLDER );
-		define ( 'RPT_URL', WP_PLUGIN_URL . '/' . RPT_FOLDER );
-	}
-}
-define_rpt_paths_plugin();
+define ( 'RPT_URL', plugins_url('', __FILE__) );
+define ( 'RPT_DIR', dirname(__FILE__) );
 
 // Library
 require( RPT_DIR . '/inc/functions.inc.php' );

@@ -4,7 +4,7 @@ Donate link: http://www.beapi.fr/donate/
 Tags : custom, post types, cms, post type
 Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 
 == Description ==
 
@@ -21,6 +21,9 @@ For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/sho
 
 == Changelog ==
 
+* Version 1.0.9 :
+	* Fix possible bug with folder name
+	* Fix bug with functions API and switch_to_blog()
 * Version 1.0.8 :
 	* Fix potential warning during saving.
 	* Fix bug that not allow to uncheck all relations

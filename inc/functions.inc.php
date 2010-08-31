@@ -39,7 +39,7 @@ function rpt_set_object_relation( $custom_id = 0, $object_ids = array(), $post_t
 	foreach( (array) $object_ids as $object_id ) {
 		if ( $object_id == 0 || $object_id == $custom_id ) continue; // No zero, no master/master !
 		
-		$wpdb->insert( $wpdb->relations, array( 'object_id_1' => $custom_id, 'object_id_2' => $object_id ) );
+		$wpdb->insert( $wpdb->posts_relations, array( 'object_id_1' => $custom_id, 'object_id_2' => $object_id ) );
 	}
 	
 	return true;
@@ -75,7 +75,7 @@ function rpt_get_object_relation( $custom_id = 0, $post_types = array() ) {
 	}
 		
 	// Make query to get relation ID depending the post types !
- 	$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->relations WHERE (object_id_1 = %d OR object_id_2 = %d) $restrict_posts", $custom_id, $custom_id));
+ 	$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->posts_relations WHERE (object_id_1 = %d OR object_id_2 = %d) $restrict_posts", $custom_id, $custom_id));
  	
 	// Clean array for return... only take the right ID...
 	$post_ids = array();
@@ -120,6 +120,6 @@ function rpt_delete_object_relation( $custom_id = 0, $post_types = array() ) {
 		$restrict_posts = " AND (object_id_1 IN (".implode(',',$ids).") OR object_id_2 IN (".implode(',',$ids)."))";
 	}
 
-	return $wpdb->query( $wpdb->prepare("DELETE FROM $wpdb->relations WHERE (object_id_1 = %d OR object_id_2 = %d) $restrict_posts", $custom_id, $custom_id) );
+	return $wpdb->query( $wpdb->prepare("DELETE FROM $wpdb->posts_relations WHERE (object_id_1 = %d OR object_id_2 = %d) $restrict_posts", $custom_id, $custom_id) );
 }
 ?>
