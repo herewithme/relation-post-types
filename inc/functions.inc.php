@@ -68,7 +68,7 @@ function rpt_get_object_relation( $custom_id = 0, $post_types = array() ) {
 	
 	$restrict_posts = '';
 	if ( !empty($post_types) ) {
-		$ids = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE ID != %d AND post_type IN ('".implode("', '",$post_types)."')", $custom_id));
+		$ids = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE ID != %d AND post_type IN ('".implode("', '", $post_types)."')", $custom_id));
 		if ( $ids == false )
 			return false;
 		$restrict_posts = " AND (object_id_1 IN (".implode(',',$ids).") OR object_id_2 IN (".implode(',',$ids)."))";
@@ -121,5 +121,50 @@ function rpt_delete_object_relation( $custom_id = 0, $post_types = array() ) {
 	}
 
 	return $wpdb->query( $wpdb->prepare("DELETE FROM $wpdb->posts_relations WHERE (object_id_1 = %d OR object_id_2 = %d) $restrict_posts", $custom_id, $custom_id) );
+}
+
+/**
+ * This method allow to get items of one content type which have relation with a another post type... The first arg is the post type use for return IDs...
+ *
+ * @param string $return_post_type 
+ * @param string $comparaison_post_type 
+ * @return array|boolean
+ * @author Amaury Balmer
+ */
+function rpt_get_objects_with_relations( $return_post_type = '', $comparaison_post_type = '' ) {
+	global $wpdb;
+	
+	// Get IDs for both post type
+ 	$ids1 = $wpdb->get_col( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type = %s", $return_post_type) );
+	$ids2 = $wpdb->get_col( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type = %s", $comparaison_post_type) );
+	
+	// Build SQL Where
+	$where = '';
+	foreach( $ids1 as $id1 ) {
+		foreach( $ids2 as $id2 ) {
+			$where .= " OR ( (object_id_1 = $id1 AND object_id_2 = $id2) OR (object_id_1 = $id2 AND object_id_2 = $id1) ) ";
+		}
+	}
+	
+	// Get ID of relations
+	$results = $wpdb->get_results("SELECT DISTINCT * 
+		FROM $wpdb->posts_relations WHERE (
+			object_id_1 IN (".implode(',', $ids1).") AND object_id_2 IN (".implode(',', $ids2).")
+		)
+		OR (
+			object_id_1 IN (".implode(',', $ids2).") AND object_id_2 IN (".implode(',', $ids1).")
+		)");
+	
+	// Clean array for return... only take the ID in right post type...
+	$post_ids = array();
+	foreach( (array) $results as $result ) {
+		if ( in_array($result->object_id_1, $ids1) ) {
+			$post_ids[] = $result->object_id_1;
+		} elseif ( in_array($result->object_id_2, $ids1) ) {
+			$post_ids[] = $result->object_id_2;
+		}
+	}
+	
+	return $post_ids;
 }
 ?>
