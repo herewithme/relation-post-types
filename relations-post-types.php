@@ -5,7 +5,7 @@ Plugin URI: http://redmine.beapi.fr/projects/show/relations-post-types
 Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer
 Author URI: http://www.beapi.fr
-Version: 1.0.9
+Version: 1.0.10
 Text Domain: relations-post-types
 Domain Path: /languages/
 Network: false

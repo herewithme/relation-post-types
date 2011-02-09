@@ -24,6 +24,14 @@ class RelationsPostTypes_Admin_Post {
 	 * @author Amaury Balmer
 	 */
 	function saveObjectRelations( $post_ID = 0, $post = null ) {
+		if ( !isset($post) || $post == null ) {
+			$post = get_post( $post_ID );
+		}
+		
+		if ( !isset($_POST['post-relation-post-types']) ) { // Save only when relation post type is called before.
+			return false;
+		}
+		
 		// Take post type from arg !
 		$post_type = $post->post_type;
 		
@@ -37,17 +45,17 @@ class RelationsPostTypes_Admin_Post {
 					continue;
 				
 				if ( isset($_POST['action']) && !isset($_POST['relations'][$current_post_type]) ) {
-
+					
 					rpt_delete_object_relation( $post_ID, array($current_post_type) );
-				
+					
 				} elseif ( isset($_POST['relations'][$current_post_type]) ) {
-				
+					
 					// Secure datas
 					if ( is_array($_POST['relations'][$current_post_type]) )
 						$_POST['relations'][$current_post_type] = array_map( 'intval', $_POST['relations'][$current_post_type] );
 					else
 						$_POST['relations'][$current_post_type] = (int) $_POST['relations'][$current_post_type];
-
+					
 					rpt_set_object_relation( $post_ID, $_POST['relations'][$current_post_type], $current_post_type, false );
 				
 				}
@@ -163,6 +171,8 @@ class RelationsPostTypes_Admin_Post {
 				</ul>
 			</div><!-- /.tabs-panel -->
 		</div><!-- /.posttypediv -->
+		
+		<input type="hidden" name="post-relation-post-types" value="1" />
 		<?php
 	}
 }
