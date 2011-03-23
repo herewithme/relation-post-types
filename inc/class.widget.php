@@ -51,7 +51,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 		
 		$items_query = new WP_Query( array(
-			'include'			=> $ids,
+			'post__in'			=> $ids,
 			'post_type' 		=> $instance['post_type'],
 			'post_status' 		=> 'publish',
 			'showposts' 	 	=> $instance['number'],
@@ -76,6 +76,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 			
 			echo '</ul>' . "\n";
 		}
+		wp_reset_postdata();
 		
 		echo $after_widget;
 		return true;

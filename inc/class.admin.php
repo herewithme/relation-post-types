@@ -1,11 +1,11 @@
 <?php
 class RelationsPostTypes_Admin {
-	var $admin_url 	= '';
-	var $admin_slug = 'relations-posttypes-settings';
+	private $admin_url 	= '';
+	private $admin_slug = 'relations-posttypes-settings';
 	
 	// Error management
-	var $message = '';
-	var $status  = '';
+	private $message = '';
+	private $status  = '';
 	
 	/**
 	 * Constructor

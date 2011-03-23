@@ -24,7 +24,7 @@ class RelationsPostTypes_Admin_Post {
 	 * @author Amaury Balmer
 	 */
 	function saveObjectRelations( $post_ID = 0, $post = null ) {
-		if ( !isset($post) || $post == null ) {
+		if ( !isset($post) || is_null($post) ) {
 			$post = get_post( $post_ID );
 		}
 		

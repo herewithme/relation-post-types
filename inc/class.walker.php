@@ -45,14 +45,14 @@ class Walker_Relations_Menu extends Walker {
 	 * @see Walker::$tree_type
 	 * @var string
 	 */
-	var $tree_type = array( 'post_type' );
+	public $tree_type = array( 'post_type' );
 
 	/**
 	 * @see Walker::$db_fields
 	 * @todo Decouple this.
 	 * @var array
 	 */
-	var $db_fields = array( 'parent' => 'post_parent', 'id' => 'ID' );
+	public $db_fields = array( 'parent' => 'post_parent', 'id' => 'ID' );
 
 	/**
 	 * @see Walker::start_lvl()
