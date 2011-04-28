@@ -17,7 +17,7 @@ class RelationsPostTypes_Admin {
 		$this->admin_url = admin_url( 'options-general.php?page='.$this->admin_slug );
 		
 		// Register hooks
-		add_action( 'admin_init', array(&$this, 'initStyleScript') );
+		//add_action( 'admin_init', array(&$this, 'initStyleScript') );
 		add_action( 'admin_init', array(&$this, 'checkRelations') );
 		add_action( 'admin_menu', array(&$this, 'addMenu') );
 	}
@@ -32,7 +32,7 @@ class RelationsPostTypes_Admin {
 		global $pagenow;
 		
 		if ( in_array( $pagenow, array('post.php', 'post-new.php') ) ) {
-			wp_enqueue_style ( 'simple-custom-types', RPT_URL.'/ressources/admin.css', array(), RPT_VERSION );
+			wp_enqueue_style ( 'relation-post-types', RPT_URL.'/ressources/admin.css', array(), RPT_VERSION );
 		}
 	}
 	

@@ -50,10 +50,11 @@ function rpt_set_object_relation( $custom_id = 0, $object_ids = array(), $post_t
  *
  * @param integer $custom_id 
  * @param array $post_types
- * @return void
+ * @param boolean $single
+ * @return array|false|integer
  * @author Amaury Balmer
  */
-function rpt_get_object_relation( $custom_id = 0, $post_types = array() ) {
+function rpt_get_object_relation( $custom_id = 0, $post_types = array(), $single = false ) {
 	global $wpdb;
 	
 	// Object ID is valid ?
@@ -76,15 +77,24 @@ function rpt_get_object_relation( $custom_id = 0, $post_types = array() ) {
 		
 	// Make query to get relation ID depending the post types !
  	$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->posts_relations WHERE (object_id_1 = %d OR object_id_2 = %d) $restrict_posts", $custom_id, $custom_id));
- 	
+ 	if ( $results == false || empty($results) ) {
+		return false;
+	}
+	
 	// Clean array for return... only take the right ID...
 	$post_ids = array();
 	foreach( (array) $results as $result ) {
 		if ( $result->object_id_1 == $custom_id ) {
-			$post_ids[] = $result->object_id_2;
+			$post_ids[] = (int) $result->object_id_2;
 		} else { // object_id_2
-			$post_ids[] = $result->object_id_1;
+			$post_ids[] = (int) $result->object_id_1;
 		}
+	}
+	
+	if ( $single == true && is_array($post_ids) && !empty($post_ids) ) {
+		return current($post_ids);
+	} elseif( $single == true  ){
+		return false;
 	}
 	
 	return $post_ids;
