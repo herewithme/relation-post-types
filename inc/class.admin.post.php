@@ -127,7 +127,8 @@ class RelationsPostTypes_Admin_Post {
 
 		// Get current items for checked datas.
 		$current_items = rpt_get_object_relation( $object->ID );
-		$current_items = array_map( 'intval', $current_items );
+		if ( is_array($current_items) )
+			$current_items = array_map( 'intval', $current_items );
 		
 		// Build args for walker
 		$args = array(

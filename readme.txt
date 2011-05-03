@@ -4,7 +4,7 @@ Donate link: http://www.beapi.fr/donate/
 Tags : custom, post types, cms, post type, relation
 Requires at least: 3.0
 Tested up to: 3.1.2
-Stable tag: 1.0.12
+Stable tag: 1.0.13
 
 == Description ==
 
@@ -21,6 +21,8 @@ For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/sho
 
 == Changelog ==
 
+* Version 1.0.13 :
+	* Fix a warning on admin write page
 * Version 1.0.12 :
 	* Fix a bug with CSS not existing. (bug copy/paste)
 	* Add a argument for get single relation
