@@ -6,111 +6,128 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/relation-post-types\n"
-"POT-Creation-Date: 2010-08-31 11:17+0000\n"
-"PO-Revision-Date: 2010-08-31 14:22+0100\n"
-"Last-Translator: Amaury Balmer <amaury@balmer.fr>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-13 15:21+0100\n"
+"PO-Revision-Date: 2011-07-13 15:23+0100\n"
+"Last-Translator: Nicolas <njuen@beapi.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: inc/class.admin.php:46
+#: ../inc/class.admin.php:38
+#: ../inc/class.admin.post.php:161
+#: ../inc/class.admin.post.php:243
+msgid "No results found."
+msgstr "Aucun résultat trouvé."
+
+#: ../inc/class.admin.php:49
 msgid "Relations post types"
 msgstr "Relations entre types de contenu"
 
-#: inc/class.admin.php:46
+#: ../inc/class.admin.php:49
 msgid "Relations"
 msgstr "Relations"
 
-#: inc/class.admin.php:64
+#: ../inc/class.admin.php:67
 msgid "Relations post types : Settings"
 msgstr "Relations entre types de contenu : Réglages"
 
-#: inc/class.admin.php:67
+#: ../inc/class.admin.php:70
 msgid "<strong>Warning :</strong> Check or uncheck relations between 2 post types will not delete relations on DB."
 msgstr "<strong>Attention :</strong> Cocher ou décocher la relation entre 2 types de contenu n'effacera pas les liaisons dans la base de données."
 
-#: inc/class.admin.php:70
+#: ../inc/class.admin.php:73
 msgid "Instructions for use: lines correspond to each page of edition of the post type, you can show the box of relations with others contents by checking the columns of your choice"
 msgstr "Instructions : Les lignes correspondent à chaque page d'édition des types de contenus, vous pouvez afficher la boite de relations avec d'autres contenus en cochant les colonnes de votre choix."
 
-#: inc/class.admin.php:77
-#: inc/class.admin.php:90
+#: ../inc/class.admin.php:80
+#: ../inc/class.admin.php:93
 msgid "Custom types"
 msgstr "Types de contenu"
 
-#: inc/class.admin.php:139
+#: ../inc/class.admin.php:142
 msgid "Save relations"
 msgstr "Enregistrer les liaisons"
 
-#: inc/class.admin.php:164
+#: ../inc/class.admin.php:167
 msgid "Relations updated with success !"
 msgstr "Relations mises à jour avec succès !"
 
-#: inc/class.admin.post.php:149
-msgid "No items."
-msgstr "Aucun objet."
+#: ../inc/class.admin.post.php:193
+msgid "View All"
+msgstr "Tous"
 
-#: inc/class.walker.php:32
+#: ../inc/class.admin.post.php:194
+msgid "Most Used"
+msgstr "Les plus utilisés"
+
+#: ../inc/class.admin.post.php:195
+#: ../inc/class.admin.post.php:231
+msgid "Search"
+msgstr "Rechercher"
+
+#: ../inc/class.walker.php:32
 #, php-format
 msgid "Item %d"
 msgstr "Objet %d"
 
-#: inc/class.widget.php:16
+#: ../inc/class.widget.php:16
 msgid "Relations Content Widget"
 msgstr "Widget de contenu relatif"
 
-#: inc/class.widget.php:16
+#: ../inc/class.widget.php:16
 msgid "Display related content for one or each post type single view."
 msgstr "Affiche le contenu relatif pour un ou plusieurs type de contenu dans la vue article unique."
 
-#: inc/class.widget.php:67
+#: ../inc/class.widget.php:67
 msgid "No items actually for this custom type."
 msgstr "Aucun objet n'existe actuellement pour ce type de contenu"
 
-#: inc/class.widget.php:109
+#: ../inc/class.widget.php:110
 msgid "Related content"
 msgstr "Contenu relatif"
 
-#: inc/class.widget.php:118
-#: inc/class.widget.php:141
+#: ../inc/class.widget.php:119
+#: ../inc/class.widget.php:142
 msgid "Title"
 msgstr "Titre"
 
-#: inc/class.widget.php:123
+#: ../inc/class.widget.php:124
 msgid "What to show"
 msgstr "Que voulez vous afficher ?"
 
-#: inc/class.widget.php:125
+#: ../inc/class.widget.php:126
 msgid "All"
 msgstr "Tous"
 
-#: inc/class.widget.php:138
+#: ../inc/class.widget.php:139
 msgid "Order on which field ?"
 msgstr "Trier sur quel champ ?"
 
-#: inc/class.widget.php:141
+#: ../inc/class.widget.php:142
 msgid "Date"
 msgstr "Date"
 
-#: inc/class.widget.php:141
+#: ../inc/class.widget.php:142
 msgid "ID"
 msgstr "ID"
 
-#: inc/class.widget.php:149
+#: ../inc/class.widget.php:150
 msgid "Order by ?"
 msgstr "Trier par ?"
 
-#: inc/class.widget.php:152
+#: ../inc/class.widget.php:153
 msgid "Ascending"
 msgstr "Ascendant"
 
-#: inc/class.widget.php:152
+#: ../inc/class.widget.php:153
 msgid "Descending"
 msgstr "Descendant"
 
-#: inc/class.widget.php:160
+#: ../inc/class.widget.php:161
 msgid "Number of items to show"
 msgstr "Nombre d'objets à afficher"
 
+#~ msgid "No items."
+#~ msgstr "Aucun objet."

@@ -177,4 +177,42 @@ function rpt_get_objects_with_relations( $return_post_type = '', $comparaison_po
 	
 	return $post_ids;
 }
+
+function rpt_get_objects_most_used( $return_post_type = '' ) {
+	global $wpdb;
+	
+	// Get IDs for both post type
+ 	$ids = $wpdb->get_col( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type = %s", $return_post_type) );	
+	
+	// Build SQL Where
+	$where = '';
+	$i = 0;
+	foreach( $ids as $id ) {
+		if( $i != 0 )
+			$where .= " OR ";
+		$where .= " object_id_1 = $id OR object_id_2 = $id";
+		$i++;
+	}
+	
+	// Get ID of relations
+	$count1 = $wpdb->get_results("SELECT object_id_1 as post_id,count(object_id_1) as count
+		FROM $wpdb->posts_relations WHERE $where GROUP BY object_id_1 ORDER BY count DESC" , ARRAY_A);
+	
+	$count2 = $wpdb->get_results("SELECT object_id_2 as post_id,count(object_id_2) as count
+		FROM $wpdb->posts_relations WHERE $where GROUP BY object_id_2 ORDER BY count DESC", ARRAY_A);
+
+	$results = array();
+	
+	foreach( $count1 as $count ) {
+		$results[] = $count['post_id'];
+	}
+	foreach( $count2 as $count ) {
+		$results[] = $count['post_id'];
+	}
+	
+	// Just have the right ids
+	$results = array_unique( $results );
+
+	return $results;
+}
 ?>

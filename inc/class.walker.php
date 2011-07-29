@@ -20,9 +20,9 @@ class Walker_Relations_Checklist extends Walker_Relations_Menu  {
 		$item->post_title = trim($item->post_title);
 		$item->post_name  = trim($item->post_name);
 
-		$output .= $indent . '<li>';
+		$output .= $indent . '<li class="popular-rpt">';
 		$output .= '<label class="menu-item-title">';
-			$output .= '<input type="checkbox" '.checked( true, in_array($item->ID, (array) $args->current_items), false).' class="menu-item-checkbox" name="relations[' . $args->post_type . '][]" value="'. esc_attr( $item->ID ) .'" /> ';
+			$output .= '<input type="checkbox" '.checked( true, in_array($item->ID, (array) $args->current_items), false).' id="in-'.$args->post_type.'-'.$item->ID.'" class="menu-item-checkbox" name="relations[' . $args->post_type . '][]" value="'. esc_attr( $item->ID ) .'" /> ';
 			
 			if ( !empty($item->post_title) ) {
 				$output .= esc_html( $item->post_title );
@@ -86,7 +86,7 @@ class Walker_Relations_Menu extends Walker {
 	 */
 	function start_el(&$output, $item, $depth, $args) {
 		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
-		$output .= $indent . '<li id="item-'. $item->ID . '">';
+		$output .= $indent . '<li id="item-'. $item->ID . '" class="popular-'.$args->post_type.'">';
 
 		$attributes .= ! empty( $item->url ) ? ' href="'.esc_attr($item->url).'"' : '';
 

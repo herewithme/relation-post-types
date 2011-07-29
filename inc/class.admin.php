@@ -17,9 +17,10 @@ class RelationsPostTypes_Admin {
 		$this->admin_url = admin_url( 'options-general.php?page='.$this->admin_slug );
 		
 		// Register hooks
-		//add_action( 'admin_init', array(&$this, 'initStyleScript') );
-		add_action( 'admin_init', array(&$this, 'checkRelations') );
-		add_action( 'admin_menu', array(&$this, 'addMenu') );
+		add_action( 'admin_init', array( &$this, 'initStyleScript') );
+		add_action( 'admin_init', array( &$this, 'checkRelations') );
+		add_action( 'admin_init', array( &$this, 'checkImportExport') );
+		add_action( 'admin_menu', array( &$this, 'addMenu') );
 	}
 	
 	/**
@@ -32,7 +33,10 @@ class RelationsPostTypes_Admin {
 		global $pagenow;
 		
 		if ( in_array( $pagenow, array('post.php', 'post-new.php') ) ) {
-			wp_enqueue_style ( 'relation-post-types', RPT_URL.'/ressources/admin.css', array(), RPT_VERSION );
+			wp_enqueue_script( 'rpt-admin-post', RPT_URL.'/ressources/js/admin-post.js', 'jquery', RPT_VERSION );
+			
+			// Add javascript translation
+			wp_localize_script( 'rpt-admin-post', 'rpt', array( 'noItems' => __( 'No results found.', 'relation-post-type' ) ) );
 		}
 	}
 	
@@ -99,7 +103,7 @@ class RelationsPostTypes_Admin {
 							</tr>
 						</tfoot>
 			
-						<tbody id="the-list" class="list:taxonomies">
+						<tbody id="the-list" class="list:relations">
 							<?php
 							$class = 'alternate';
 							$i = 0;
@@ -141,6 +145,31 @@ class RelationsPostTypes_Admin {
 				</form>
 			</div><!-- /col-container -->
 		</div>
+		
+		<div class="wrap">
+			<h2><?php _e("Relations post types : Export/Import", 'relations-post-types'); ?></h2>
+			
+			<a class="button" href="<?php echo wp_nonce_url($this->admin_url.'&amp;action=export_config_rpt', 'export-config-rpt'); ?>"><?php _e("Export config file", 'relations-post-types'); ?></a>
+			<a class="button" href="#" id="toggle-import_form"><?php _e("Import config file", 'relations-post-types'); ?></a>
+			<script type="text/javascript">
+				jQuery("#toggle-import_form").click(function(event) {
+					event.preventDefault();
+					jQuery('#import_form').removeClass('hide-if-js');
+				});
+			</script>
+			<div id="import_form" class="hide-if-js">
+				<form action="<?php echo $this->admin_url ; ?>" method="post" enctype="multipart/form-data">
+					<p>
+						<label><?php _e("Config file", 'relations-post-types'); ?></label>
+						<input type="file" name="config_file" />
+					</p>
+					<p class="submit">
+						<?php wp_nonce_field( 'import_config_file' ); ?>
+						<input class="button-primary" type="submit" name="import_config_file" value="<?php _e('I want import a config from a previous backup, this action will REPLACE current configuration', 'relations-post-types'); ?>" />
+					</p>
+				</form>
+			</div>
+		</div>
 		<?php
 		return true;
 	}
@@ -166,6 +195,57 @@ class RelationsPostTypes_Admin {
 			update_option( RPT_OPTION, $relations );
 		}
 		return false;
+	}
+	
+		/**
+	 * Check $_GET/$_POST/$_FILES for Export/Import
+	 * 
+	 * @return boolean
+	 */
+	function checkImportExport() {
+		if ( isset($_GET['action']) && $_GET['action'] == 'export_config_rpt' ) {
+			check_admin_referer('export-config-rpt');
+			
+			// No cache
+			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' ); 
+			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' ); 
+			header( 'Cache-Control: no-store, no-cache, must-revalidate' ); 
+			header( 'Cache-Control: post-check=0, pre-check=0', false ); 
+			header( 'Pragma: no-cache' ); 
+			
+			// Force download dialog
+			header("Content-Type: application/force-download");
+			header("Content-Type: application/octet-stream");
+			header("Content-Type: application/download");
+
+			// use the Content-Disposition header to supply a recommended filename and
+			// force the browser to display the save dialog.
+			header("Content-Disposition: attachment; filename=relations-post-types-config-".date('U').".txt;");
+			die('RELATIONSPOSTTYPES'.base64_encode(serialize(get_option( RPT_OPTION ))));
+		} elseif( isset($_POST['import_config_file']) && isset($_FILES['config_file']) ) {
+			check_admin_referer( 'import_config_file' );
+			
+			if ( $_FILES['config_file']['error'] > 0 ) {
+				$this->message = __('An error occured during the config file upload. Please fix your server configuration and retry.', 'relations-post-types');
+				$this->status  = 'error';
+			} else {
+				$config_file = file_get_contents( $_FILES['config_file']['tmp_name'] );
+				if ( substr($config_file, 0, strlen('RELATIONSPOSTTYPES')) !== 'RELATIONSPOSTTYPES' ) {
+					$this->message = __('This is really a config file for Relations Post Types ? Probably corrupt :(', 'relations-post-types');
+					$this->status  = 'error';
+				} else {
+					$config_file = unserialize(base64_decode(substr($config_file, strlen('RELATIONSPOSTTYPES'))));
+					if ( !is_array($config_file) ) {
+						$this->message = __('This is really a config file for Relations Post Types ? Probably corrupt :(', 'relations-post-types');
+						$this->status  = 'error';
+					} else {
+						update_option(RPT_OPTION, $config_file);
+						$this->message = __('OK. Configuration is restored.', 'relations-post-types');
+						$this->status  = 'updated';
+					}
+				}
+			}
+		}
 	}
 	
 	/**
