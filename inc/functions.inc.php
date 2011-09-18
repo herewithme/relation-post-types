@@ -121,10 +121,10 @@ function rpt_delete_object_relation( $custom_id = 0, $post_types = array() ) {
 	elseif ( empty($post_types) ) {
 		$post_types = array( get_post_type($custom_id) );
 	}
-		
+	
 	$restrict_posts = '';
 	if ( !empty($post_types) ) {
-		$ids = $wpdb->get_col("SELECT ID FROM $wpdb->posts WHERE post_type IN ('".implode("', '",$post_types)."')");
+		$ids = $wpdb->get_col("SELECT ID FROM $wpdb->posts WHERE post_type IN ('".implode("', '",$post_types)."') AND ID <> ".$custom_id);
 		if ( $ids == false )
 			return false;
 		$restrict_posts = " AND (object_id_1 IN (".implode(',',$ids).") OR object_id_2 IN (".implode(',',$ids)."))";

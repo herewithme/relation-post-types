@@ -12,7 +12,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function RelationsPostTypes_Widget() {
+	function __construct() {
 		$this->WP_Widget( 'relation-posttypes', __('Relations Content Widget', 'relations-post-types'), array( 'classname' => 'relation-posttypes-widget', 'description' => __('Display related content for one or each post type single view.', 'relations-post-types') ) );
 	}
 	
@@ -64,7 +64,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		
 		if ( !$items_query->have_posts()  ) {
-			echo '<p class="no-result">'.__('No items actually for this custom type.', 'relations-post-types').'</p>';
+			echo '<p class="no-result">'.__('No items actually for this custom post type.', 'relations-post-types').'</p>';
 		} else {
 			echo '<ul class="relations-list">' . "\n";
 			
@@ -117,12 +117,12 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title', 'relations-post-types'); ?>:</label>
-			<input id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $instance['title']; ?>" style="width:100%;" />
+			<input id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr($instance['title']); ?>" class="widefat" />
 		</p>
 		
 		<p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e('What to show', 'relations-post-types'); ?>:</label>
-			<select id="<?php echo $this->get_field_id( 'post_type' ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>" style="width:100%;">
+			<select id="<?php echo $this->get_field_id( 'post_type' ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>" class="widefat">
 				<option value="all"><?php _e('All', 'relations-post-types'); ?></option>
 				<?php
 				foreach ( get_post_types( array(), 'objects' ) as $post_type ) {
@@ -137,7 +137,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		
 		<p>
 			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e("Order on which field ?", 'relations-post-types'); ?>:</label>
-			<select id="<?php echo $this->get_field_id( 'orderby' ); ?>" name="<?php echo $this->get_field_name( 'orderby' ); ?>" style="width:100%;">
+			<select id="<?php echo $this->get_field_id( 'orderby' ); ?>" name="<?php echo $this->get_field_name( 'orderby' ); ?>" class="widefat">
 				<?php
 				foreach( array('post_date' => __('Date', 'relations-post-types'), 'ID' => __('ID', 'relations-post-types'), 'post_title' => __('Title', 'relations-post-types') ) as $optval => $option ) {
 					echo '<option '.selected( $instance['orderby'], $optval, false ).' value="'.esc_attr($optval).'">'.esc_html($option).'</option>';
@@ -148,7 +148,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		
 		<p>
 			<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e("Order by ?", 'relations-post-types'); ?>:</label>
-			<select id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>" style="width:100%;">
+			<select id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>" class="widefat">
 				<?php
 				foreach( array('ASC' => __('Ascending', 'relations-post-types'), 'DESC' => __('Descending', 'relations-post-types') ) as $optval => $option ) {
 					echo '<option '.selected( $instance['order'], $optval, false ).' value="'.esc_attr($optval).'">'.esc_html($option).'</option>';
@@ -159,7 +159,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 		
 		<p>
 			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e("Number of items to show", 'relations-post-types'); ?>:</label>
-			<input id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" value="<?php echo (int) $instance['number']; ?>" style="width:100%;" />
+			<input id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" value="<?php echo (int) $instance['number']; ?>" class="widefat" />
 		</p>
 	<?php
 	}

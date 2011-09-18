@@ -5,7 +5,7 @@ class RelationsPostTypes_Admin_Post {
 	 *
 	 * @return boolean
 	 */
-	function RelationsPostTypes_Admin_Post() {
+	function __construct() {
 		// Save taxo datas
 		add_action( 'save_post', array(&$this, 'saveObjectRelations'), 10, 2 );
 		
@@ -27,13 +27,17 @@ class RelationsPostTypes_Admin_Post {
 	 * @author Amaury Balmer
 	 */
 	function saveObjectRelations( $post_ID = 0, $post = null ) {
-		if ( !isset($post) || is_null($post) ) {
-			$post = get_post( $post_ID );
-		}
-
-		if ( !isset($_POST['post-relation-post-types']) || $_POST['post-relation-post-types'] != 1 ) { // Save only when relation post type is called before.
+		// Don't do anything when autosave 
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+				return false;
+		
+		// Save only when relation post type is called before.
+		if ( !isset($_POST['post-relation-post-types']) || $_POST['post-relation-post-types'] != 1 )
 			return false;
-		}
+		
+		// Get current post object
+		if ( !isset($post) || is_null($post) )
+			$post = get_post( $post_ID );
 
 		// Take post type from arg !
 		$post_type = $post->post_type;
@@ -54,9 +58,10 @@ class RelationsPostTypes_Admin_Post {
 				} elseif ( isset($_POST['relations'][$current_post_type]) ) {
 					
 					// Secure datas
-					if ( is_array($_POST['relations'][$current_post_type]) )
+					if ( is_array($_POST['relations'][$current_post_type]) ) {
 						$_POST['relations'][$current_post_type] = array_map( 'intval', $_POST['relations'][$current_post_type] );
-					else
+						$_POST['relations'][$current_post_type] = array_unique( $_POST['relations'][$current_post_type] );
+					} else
 						$_POST['relations'][$current_post_type] = (int) $_POST['relations'][$current_post_type];
 					
 					rpt_set_object_relation( $post_ID, $_POST['relations'][$current_post_type], $current_post_type, false );

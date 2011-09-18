@@ -4,7 +4,7 @@ Donate link: http://www.beapi.fr/donate/
 Tags : custom, post types, cms, post type, relation
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 1.1-beta1
+Stable tag: 1.2.1
 
 == Description ==
 
@@ -19,12 +19,23 @@ For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/sho
 2. Activate the plugin within you WordPress Administration Backend
 3. Go to Settings > Relations and follow the steps on the [Simple Custom Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
 
+TODO : Add some theme integration here
+
 == Screenshots ==
 
 1. Metabox in Post Types for creating a relation
 2. Option page to set relations between two content types
 
 == Changelog ==
+
+* Version 1.2.1 :
+	* Add query var with prefix "rel-" for each CPT allow filtering on URL
+* Version 1.2 :
+	* Stable enough for remove beta version
+	* Add some template functions for an easier usage
+	* Fix a very rare bug when a post type have relation with the same post type and when this relation is empty, that delete others relations of this post id. (thanks to bniess for reporting bug)
+* Version 1.1-beta2 :
+	* Fix possible bug with others plugin's beapi that use import 
 * Version 1.1-beta1 :
 	* Add tab for searching
 	* Add tab to select most used elements

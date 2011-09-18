@@ -6,7 +6,7 @@ class RelationsPostTypes_Base {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function RelationsPostTypes_Base() {}
+	function __construct() {}
 	
 	/**
 	 * Try to create the table during the installation

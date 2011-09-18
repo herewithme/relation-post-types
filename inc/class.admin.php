@@ -13,7 +13,7 @@ class RelationsPostTypes_Admin {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function RelationsPostTypes_Admin() {
+	function __construct() {
 		$this->admin_url = admin_url( 'options-general.php?page='.$this->admin_slug );
 		
 		// Register hooks
@@ -164,8 +164,8 @@ class RelationsPostTypes_Admin {
 						<input type="file" name="config_file" />
 					</p>
 					<p class="submit">
-						<?php wp_nonce_field( 'import_config_file' ); ?>
-						<input class="button-primary" type="submit" name="import_config_file" value="<?php _e('I want import a config from a previous backup, this action will REPLACE current configuration', 'relations-post-types'); ?>" />
+						<?php wp_nonce_field( 'import_config_file_rpt' ); ?>
+						<input class="button-primary" type="submit" name="import_config_file_rpt" value="<?php _e('I want import a config from a previous backup, this action will REPLACE current configuration', 'relations-post-types'); ?>" />
 					</p>
 				</form>
 			</div>
@@ -222,8 +222,8 @@ class RelationsPostTypes_Admin {
 			// force the browser to display the save dialog.
 			header("Content-Disposition: attachment; filename=relations-post-types-config-".date('U').".txt;");
 			die('RELATIONSPOSTTYPES'.base64_encode(serialize(get_option( RPT_OPTION ))));
-		} elseif( isset($_POST['import_config_file']) && isset($_FILES['config_file']) ) {
-			check_admin_referer( 'import_config_file' );
+		} elseif( isset($_POST['import_config_file_rpt']) && isset($_FILES['config_file']) ) {
+			check_admin_referer( 'import_config_file_rpt' );
 			
 			if ( $_FILES['config_file']['error'] > 0 ) {
 				$this->message = __('An error occured during the config file upload. Please fix your server configuration and retry.', 'relations-post-types');
