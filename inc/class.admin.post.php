@@ -170,7 +170,7 @@ class RelationsPostTypes_Admin_Post {
 		
 		// Most related objects
 		// Get objects ids
-		$MostRelatedIds = rpt_get_objects_most_used( $post_type_name );
+		$mostRelatedIds = rpt_get_objects_most_used( $post_type_name );
 		
 		// Change the original args of the query
 		$args['post__in'] = $mostRelatedIds;
