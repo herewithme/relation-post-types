@@ -6,7 +6,7 @@ class RelationsPostTypes_Base {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function __construct() {}
+	public function __construct() {}
 	
 	/**
 	 * Try to create the table during the installation
@@ -14,7 +14,7 @@ class RelationsPostTypes_Base {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function activate() {
+	public static function activate() {
 		global $wpdb;
 		
 		if ( ! empty($wpdb->charset) )
@@ -41,5 +41,5 @@ class RelationsPostTypes_Base {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function deactivate() {}
+	public static function deactivate() {}
 }

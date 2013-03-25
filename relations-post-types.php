@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/relation-post-types/
 Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer, Nicolas Juen
 Author URI: http://www.beapi.fr
-Version: 1.2.4
+Version: 1.3
 Text Domain: relations-post-types
 Domain Path: /languages/
 Network: false
@@ -47,45 +47,43 @@ $wpdb->tables[] 		= 'posts_relations';
 $wpdb->posts_relations 	= $wpdb->prefix . 'posts_relations';
 
 // Folder name
-define ( 'RPT_VERSION', '1.2.4' );
+define ( 'RPT_VERSION', '1.3' );
 define ( 'RPT_OPTION',  'relations-post-types' );
 
-define ( 'RPT_URL', plugins_url('', __FILE__) );
-define ( 'RPT_DIR', dirname(__FILE__) );
+define('RPT_URL', plugin_dir_url ( __FILE__ ));
+define('RPT_DIR', plugin_dir_path( __FILE__ ));
 
 // Library
-require( RPT_DIR . '/inc/functions.inc.php' );
-require( RPT_DIR . '/inc/functions.tpl.php' );
+require( RPT_DIR . 'inc/functions.inc.php' );
+require( RPT_DIR . 'inc/functions.tpl.php' );
 
 // Call client class and functions
-require( RPT_DIR . '/inc/class.base.php' );
-require( RPT_DIR . '/inc/class.walker.php' );
-require( RPT_DIR . '/inc/class.client.php' );
-require( RPT_DIR . '/inc/class.widget.php' );
+require( RPT_DIR . 'inc/class.base.php' );
+require( RPT_DIR . 'inc/class.walker.php' );
+require( RPT_DIR . 'inc/class.client.php' );
+require( RPT_DIR . 'inc/class.widget.php' );
 
 if ( is_admin() ) { // Call admin class
-	require( RPT_DIR . '/inc/class.admin.php' );
-	require( RPT_DIR . '/inc/class.admin.post.php' );
+	require( RPT_DIR . 'inc/class.admin.php' );
+	require( RPT_DIR . 'inc/class.admin.post.php' );
 }
 
 // Activate/Desactive Relation Post Types
 register_activation_hook  ( __FILE__, array('RelationsPostTypes_Base', 'activate') );
 register_deactivation_hook( __FILE__, array('RelationsPostTypes_Base', 'deactivate') );
 
-add_action( 'plugins_loaded', 'initRelationsPostTypes' );
-function initRelationsPostTypes() {
-	global $relations_post_types;
-	
+add_action( 'plugins_loaded', 'init_relations_post_types' );
+function init_relations_post_types() {
 	// Load translations
-	load_plugin_textdomain ( 'relations-post-types', false, basename(rtrim(dirname(__FILE__), '/')) . '/languages' );
+	load_plugin_textdomain('relations-post-types', false, basename(RPT_DIR) . '/languages');
 	
 	// Client
-	$relations_post_types['client-base']  = new RelationsPostTypes_Client();
+	new RelationsPostTypes_Client();
 	
 	// Admin
 	if ( is_admin() ) {
-		$relations_post_types['admin-base'] = new RelationsPostTypes_Admin();
-		$relations_post_types['admin-post'] = new RelationsPostTypes_Admin_Post();
+		new RelationsPostTypes_Admin();
+		new RelationsPostTypes_Admin_Post();
 	}
 	
 	// Widget

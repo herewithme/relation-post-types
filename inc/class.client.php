@@ -1,19 +1,18 @@
 <?php
 class RelationsPostTypes_Client {
-	
 	/**
 	 * Constructor, register hooks
 	 *
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function __construct() {
+	public function __construct() {
 		// Add query vars, for allow filtering with URL
-		add_filter( 'query_vars', array(&$this, 'addQueryVars') );
-		add_action( 'parse_query', array(&$this, 'parseQuery') );
+		add_filter( 'query_vars', array(__CLASS__, 'query_vars') );
+		add_action( 'parse_query', array(__CLASS__, 'parse_query') );
 		
 		// Delete post
-		add_action( 'delete_post', array(&$this, 'deletePost') );
+		add_action( 'delete_post', array(__CLASS__, 'delete_post') );
 	}
 	
 	/**
@@ -23,7 +22,7 @@ class RelationsPostTypes_Client {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function deletePost( $post_id = 0 ) {
+	public static function delete_post( $post_id = 0 ) {
 		$type = get_post_type( $post_id );
 		rpt_delete_object_relation( (int) $post_id, array($type) );
 	}
@@ -31,7 +30,7 @@ class RelationsPostTypes_Client {
 	/**
 	 * Add key words relations on search query vars array
 	 */
-	function addQueryVars( $query_vars = array() ) {
+	public static function query_vars( $query_vars = array() ) {
 		foreach ( get_post_types( array('show_ui' => true, 'public' => true), 'objects' ) as $post_type ) {
 			$query_vars[] = 'rel-'.$post_type->name;
 		}
@@ -42,7 +41,7 @@ class RelationsPostTypes_Client {
 	/**
 	 * Filtering results when rel- key word is set on WP_Query
 	 */
-	function parseQuery( $query ) {
+	public static function parse_query( $query ) {
 		global $wpdb;
 		
 		foreach ( get_post_types( array('show_ui' => true, 'public' => true), 'objects' ) as $post_type ) {
@@ -64,6 +63,5 @@ class RelationsPostTypes_Client {
 				// TODO: Manage rewrite and title ?
 			}
 		}
-		
 	}
 }

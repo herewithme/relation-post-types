@@ -7,16 +7,16 @@ class RelationsPostTypes_Admin_Post {
 	 */
 	function __construct() {
 		// Save taxo datas
-		add_action( 'save_post', array(&$this, 'saveObjectRelations'), 10, 2 );
+		add_action( 'save_post', array(__CLASS__, 'save_post'), 10, 2 );
 		
 		// Write post box meta
-		add_action( 'add_meta_boxes', array(&$this, 'initObjectRelations'), 10, 2 );
+		add_action( 'add_meta_boxes', array(__CLASS__, 'add_meta_boxes'), 10, 2 );
 		
 		// The ajax action for the serach in boxes
-		add_action( 'wp_ajax_posttype-quick-search', array( &$this, 'wp_ajax_posttype_quick_search' ) );
+		add_action( 'wp_ajax_posttype-quick-search', array( __CLASS__, 'wp_ajax_posttype_quick_search' ) );
 		
 		// Register JS/CSS
-		add_action( 'admin_init', array( &$this, 'initStyleScript') );
+		add_action( 'admin_init', array( __CLASS__, 'admin_init') );
 		
 		return true;
 	}
@@ -27,7 +27,7 @@ class RelationsPostTypes_Admin_Post {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function initStyleScript() {
+	public static function admin_init() {
 		global $pagenow;
 		
 		if ( in_array( $pagenow, array('post.php', 'post-new.php') ) ) {
@@ -44,7 +44,7 @@ class RelationsPostTypes_Admin_Post {
 	 * @return boolean
 	 * @author Amaury Balmer
 	 */
-	function saveObjectRelations( $post_ID = 0, $post = null ) {
+	public static function save_post( $post_ID = 0, $post = null ) {
 		// Don't do anything when autosave 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
 				return false;
@@ -99,7 +99,7 @@ class RelationsPostTypes_Admin_Post {
 	 * @return boolean
 	 * @author Amaury Balmer
 	 */
-	function initObjectRelations( $post_type = '', $post = null ) {
+	public static function add_meta_boxes( $post_type = '', $post = null ) {
 		// Prepare admin type for each relations box !
 		$current_options = get_option( RPT_OPTION );
 
@@ -119,17 +119,17 @@ class RelationsPostTypes_Admin_Post {
 				switch( $ad_type ) {
 					/*
 					case 'select' : // Custom single selector
-						add_meta_box( 'relationsdiv-' . $tax_name, $label, array(&$this, 'post_select_meta_box'), $post_type, 'side', 'default', array( 'post_type' => $_post_type ) );
+						add_meta_box( 'relationsdiv-' . $tax_name, $label, array(__CLASS__, 'post_select_meta_box'), $post_type, 'side', 'default', array( 'post_type' => $_post_type ) );
 						break;
 					
 					case 'select-multi' : // Custom multiple selector
-						add_meta_box( 'relationsdiv-' . $tax_name, $label, array(&$this, 'post_select_multi_meta_box'), $post_type, 'side', 'default', array( 'post_type' => $_post_type ) );
+						add_meta_box( 'relationsdiv-' . $tax_name, $label, array(__CLASS__, 'post_select_multi_meta_box'), $post_type, 'side', 'default', array( 'post_type' => $_post_type ) );
 						break;
 					*/
 					
 					case 'default' : // Default
 					default :
-						add_meta_box( 'relationsdiv-' . $current_post_type->name, $current_post_type->labels->name, array(&$this, 'menu_item_post_type_meta_box'), $post_type, 'side', 'default', $current_post_type );
+						add_meta_box( 'relationsdiv-' . $current_post_type->name, $current_post_type->labels->name, array(__CLASS__, 'metabox'), $post_type, 'side', 'default', $current_post_type );
 						break;
 				}
 				
@@ -149,7 +149,7 @@ class RelationsPostTypes_Admin_Post {
 	 * @param string $post_type The post type object.
 	 * @author Amaury Balmer , Nicolas Juen
 	 */
-	function menu_item_post_type_meta_box( $object, $post_type ) {
+	public static function metabox( $object, $post_type ) {
 		$post_type_name = $post_type['args']->name;
 
 		// Get current items for checked datas.
@@ -196,59 +196,12 @@ class RelationsPostTypes_Admin_Post {
 		if ( ! empty( $_REQUEST['quick-search-posttype-' . $post_type_name] ) ) {
 			$current_tab = 'search';
 		}
-		//Create the walker
-		$walker = new Walker_Relations_Checklist;
-		?>
-		<div id="posttype-<?php echo $post_type_name; ?>" class="categorydiv categorydivrpt">
-			<ul id="posttype-<?php echo $post_type_name; ?>-tabs" class="category-tabs">
-				<li <?php echo ( 'all' == $current_tab ? ' class="tabs"' : '' ); ?>><a class="nav-tab-link" href="#tabs-panel-posttype-<?php echo $post_type_name; ?>-all"><?php _e( 'View All', 'relation-post-types' ); ?></a></li>
-				<li <?php echo ( 'search' == $current_tab ? ' class="tabs"' : '' ); ?>><a class="nav-tab-link" href="#tabs-panel-posttype-<?php echo $post_type_name; ?>-search"><?php _e( 'Search', 'relation-post-types' ); ?></a></li>
-			</ul>
-			
-			<div id="tabs-panel-posttype-<?php echo $post_type_name; ?>-all" class="tabs-panel tabs-panel-view-all <?php echo ( 'all' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive' ); ?>">
-				<ul id="<?php echo $post_type_name; ?>checklist" class="list:<?php echo $post_type_name; ?> categorychecklist form-no-clear">
-					<?php
-					$args['walker'] = $walker;
-					$checkbox_items = walk_nav_menu_tree( $posts, 0, (object) $args );
-					echo $checkbox_items;
-					?>
-				</ul>
-			</div><!-- /.tabs-all -->
 
-			<div id="tabs-panel-posttype-<?php echo $post_type_name; ?>-search" class="tabs-panel <?php echo ( 'search' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive' ); ?>" >
-				<?php
-				if ( isset( $_REQUEST['quick-search-posttype-' . $post_type_name] ) ) {
-					$searched = esc_attr( $_REQUEST['quick-search-posttype-' . $post_type_name] );
-					$search_results = get_posts( array( 's' => $searched, 'post_type' => $post_type_name, 'fields' => 'all', 'order' => 'DESC', ) );
-				} else {
-					$searched = '';
-					$search_results = array();
-				}
-				?>
-				<p class="quick-search-wrap">
-					<input type="text" class="quick-search input-with-default-title" title="<?php esc_attr_e('Search'); ?>" value="<?php echo $searched; ?>" name="quick-search-posttype-<?php echo $post_type_name; ?>" />
-					<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" />
-					<?php submit_button( __( 'Search', 'relation-post-types' ), 'quick-search-submit button-secondary hide-if-js', 'submit', false, array( 'id' => 'submit-quick-search-posttype-' . $post_type_name ) ); ?>
-				</p>
-	
-				<ul id="<?php echo $post_type_name; ?>-search-checklist" class="list:<?php echo $post_type_name?> categorychecklist form-no-clear">
-				<?php if ( ! empty( $search_results ) && ! is_wp_error( $search_results ) ) : ?>
-					<?php
-					$args['walker'] = $walker;
-					echo walk_nav_menu_tree( $search_results, 0, (object) $args );
-					?>
-				<?php elseif ( is_wp_error( $search_results ) ) : ?>
-					<li><?php echo $search_results->get_error_message(); ?></li>
-				<?php elseif ( ! empty( $searched ) ) : ?>
-					<li><?php _e( 'No results found.', 'relation-post-types' ); ?></li>
-				<?php endif; ?>
-				</ul>
-			</div><!-- /.tabs-search -->
-			
-		</div><!-- /.posttypediv -->
-		
-		<input type="hidden" name="post-relation-post-types" value="1" />
-		<?php
+		// Create the walker
+		$walker = new Walker_Relations_Checklist;
+
+		// Get metabox HTML
+		include( RPT_DIR . 'views/admin/metabox.php' );
 	}
 
 	/**
@@ -258,7 +211,7 @@ class RelationsPostTypes_Admin_Post {
 	 * @param void
 	 * @author Nicolas Juen
 	 */
-	function wp_ajax_posttype_quick_search( ) {
+	public static function wp_ajax_posttype_quick_search( ) {
 		$args = array();
 		$type = isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : '';
 		$query = isset( $_REQUEST['q'] ) ? $_REQUEST['q'] : '';
@@ -315,4 +268,3 @@ class RelationsPostTypes_Admin_Post {
 		die();
 	}
 }
-?>
