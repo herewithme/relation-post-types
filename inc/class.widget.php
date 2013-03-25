@@ -161,7 +161,6 @@ class RelationsPostTypes_Widget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e("Number of items to show", 'relations-post-types'); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" value="<?php echo (int) $instance['number']; ?>" class="widefat" />
 		</p>
-	<?php
+		<?php
 	}
 }
-?>

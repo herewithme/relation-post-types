@@ -43,4 +43,3 @@ class RelationsPostTypes_Base {
 	 */
 	function deactivate() {}
 }
-?>

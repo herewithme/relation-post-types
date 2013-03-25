@@ -48,7 +48,7 @@ class RelationsPostTypes_Client {
 		foreach ( get_post_types( array('show_ui' => true, 'public' => true), 'objects' ) as $post_type ) {
 			$key = 'rel-'.$post_type->name;
 			
-			if ( isset($query->query_vars[$key]) && !empty($query->query_vars[$key]) ) {				
+			if ( isset($query->query_vars[$key]) && !empty($query->query_vars[$key]) ) {
 				// Get ID form slug
 				$post_id = (int) $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type = %s", stripslashes($query->query_vars[$key]), $post_type->name) );
 				
@@ -59,10 +59,11 @@ class RelationsPostTypes_Client {
 					// TODO: Manage the case when the post__in field is already charged ?
 				}
 				
+				$query->is_home = false;
+				$query->is_archive = true;
 				// TODO: Manage rewrite and title ?
 			}
 		}
 		
 	}
 }
-?>

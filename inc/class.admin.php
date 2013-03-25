@@ -17,28 +17,12 @@ class RelationsPostTypes_Admin {
 		$this->admin_url = admin_url( 'options-general.php?page='.$this->admin_slug );
 		
 		// Register hooks
-		add_action( 'admin_init', array( &$this, 'initStyleScript') );
 		add_action( 'admin_init', array( &$this, 'checkRelations') );
 		add_action( 'admin_init', array( &$this, 'checkImportExport') );
 		add_action( 'admin_menu', array( &$this, 'addMenu') );
 	}
 	
-	/**
-	 * Load JS and CSS need for admin features.
-	 *
-	 * @return void
-	 * @author Amaury Balmer
-	 */
-	function initStyleScript() {
-		global $pagenow;
-		
-		if ( in_array( $pagenow, array('post.php', 'post-new.php') ) ) {
-			wp_enqueue_script( 'rpt-admin-post', RPT_URL.'/ressources/js/admin-post.js', 'jquery', RPT_VERSION );
-			
-			// Add javascript translation
-			wp_localize_script( 'rpt-admin-post', 'rpt', array( 'noItems' => __( 'No results found.', 'relation-post-type' ) ) );
-		}
-	}
+
 	
 	/**
 	 * Add settings menu page
@@ -268,4 +252,3 @@ class RelationsPostTypes_Admin {
 		}
 	}
 }
-?>

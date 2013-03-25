@@ -15,7 +15,25 @@ class RelationsPostTypes_Admin_Post {
 		// The ajax action for the serach in boxes
 		add_action( 'wp_ajax_posttype-quick-search', array( &$this, 'wp_ajax_posttype_quick_search' ) );
 		
+		// Register JS/CSS
+		add_action( 'admin_init', array( &$this, 'initStyleScript') );
+		
 		return true;
+	}
+	
+	/**
+	 * Load JS and CSS need for admin features.
+	 *
+	 * @return void
+	 * @author Amaury Balmer
+	 */
+	function initStyleScript() {
+		global $pagenow;
+		
+		if ( in_array( $pagenow, array('post.php', 'post-new.php') ) ) {
+			wp_enqueue_script ( 'rpt-admin-post', RPT_URL.'/ressources/js/admin-post.min.js', 'jquery', RPT_VERSION, true );
+			wp_localize_script( 'rpt-admin-post', 'rpt', array( 'noItems' => __( 'No results found.', 'relation-post-type' ) ) ); // Add javascript translation
+		}
 	}
 	
 	/**
@@ -167,19 +185,6 @@ class RelationsPostTypes_Admin_Post {
 			echo '<p>' . __( 'No results found.', 'relation-post-types' ) . '</p>';
 			return;
 		}
-		
-		// Most related objects
-		// Get objects ids
-		$mostRelatedIds = rpt_get_objects_most_used( $post_type_name );
-		
-		// Change the original args of the query
-		$args['post__in'] = $mostRelatedIds;
-		$args['orderby'] = null;
-		$args['order'] = null;
-		
-		// Create new object query
-		$mQuery = new WP_Query;
-		$mPosts = $get_posts->query( $args );
 
 		// The current ab selected
 		$current_tab = 'all';
@@ -194,10 +199,9 @@ class RelationsPostTypes_Admin_Post {
 		//Create the walker
 		$walker = new Walker_Relations_Checklist;
 		?>
-		<div id="posttype-<?php echo $post_type_name; ?>" class="nav-menus-php posttypediv">
-			<ul id="posttype-<?php echo $post_type_name; ?>-tabs" class="posttype-tabs add-menu-item-tabs">
+		<div id="posttype-<?php echo $post_type_name; ?>" class="categorydiv categorydivrpt">
+			<ul id="posttype-<?php echo $post_type_name; ?>-tabs" class="category-tabs">
 				<li <?php echo ( 'all' == $current_tab ? ' class="tabs"' : '' ); ?>><a class="nav-tab-link" href="#tabs-panel-posttype-<?php echo $post_type_name; ?>-all"><?php _e( 'View All', 'relation-post-types' ); ?></a></li>
-				<li <?php echo ( 'most-recent' == $current_tab ? ' class="tabs"' : '' ); ?>><a class="nav-tab-link" href="#tabs-panel-posttype-<?php echo $post_type_name; ?>-most-recent"><?php _e( 'Most Used', 'relation-post-types' ); ?></a></li>
 				<li <?php echo ( 'search' == $current_tab ? ' class="tabs"' : '' ); ?>><a class="nav-tab-link" href="#tabs-panel-posttype-<?php echo $post_type_name; ?>-search"><?php _e( 'Search', 'relation-post-types' ); ?></a></li>
 			</ul>
 			
@@ -210,16 +214,6 @@ class RelationsPostTypes_Admin_Post {
 					?>
 				</ul>
 			</div><!-- /.tabs-all -->
-			
-			<div id="tabs-panel-posttype-<?php echo $post_type_name; ?>-most-recent" class="tabs-panel tabs-panel-view-all <?php echo ( 'most-recent' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive' ); ?>">
-				<ul id="<?php echo $post_type_name; ?>checklist" class="list:<?php echo $post_type_name; ?> categorychecklist form-no-clear">
-					<?php
-					$args['walker'] = $walker;
-					$checkbox_items = walk_nav_menu_tree( $mPosts, 0, (object) $args );
-					echo $checkbox_items;
-					?>
-				</ul>
-			</div><!-- /.tabs-most-recent -->
 
 			<div id="tabs-panel-posttype-<?php echo $post_type_name; ?>-search" class="tabs-panel <?php echo ( 'search' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive' ); ?>" >
 				<?php
@@ -275,7 +269,8 @@ class RelationsPostTypes_Admin_Post {
 		if ( 'markup' == $response_format ) {
 			$args['walker'] = new Walker_Relations_Checklist;
 		}
-		if( (int)$post_id > 0 ) {
+		
+		if( (int) $post_id > 0 ) {
 			// Get current items for checked datas.
 			$current_items = rpt_get_object_relation( $post_id );
 			if ( is_array($current_items) )
@@ -285,11 +280,6 @@ class RelationsPostTypes_Admin_Post {
 			$args['current_id'] = $post_id;
 		}
 		
-		// Get current items for checked datas.
-		$current_items = rpt_get_object_relation( $object->ID );
-		if ( is_array($current_items) )
-			$current_items = array_map( 'intval', $current_items );
-
 		if ( preg_match('/quick-search-(posttype|taxonomy)-([a-zA-Z_-]*\b)/', $type, $matches) ) {
 			if ( 'posttype' == $matches[1] && get_post_type_object( $matches[2] ) ) {
 				query_posts(array(

@@ -1,25 +1,62 @@
 === Relations Post Types ===
+
 Contributors: momo360modena,Rahe
 Donate link: http://www.beapi.fr/donate/
-Tags : custom, post types, cms, post type, relation
+Tags: custom, post types, cms, post type, relation, connections, custom post types, many-to-many, relationships
 Requires at least: 3.0
-Tested up to: 3.2.1
-Stable tag: 1.2.1
+Tested up to: 3.4.1
+Stable tag: 1.2.4
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-WordPress 3.0 and up allow to manage new custom post type. Cool !
-This plugin allow to build relation between 2 custom types, very useful for manage related content.
+This plugin allow to build relation between 2 custom types (posts, page, custom), very useful for manage related content on CMS type website.
 
-For full info go the [Relations Post Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
+A few example use cases:
+
+ * manually lists of related posts
+ * post series
+ * rented houses connected to agency
+ * etc.
+
+Relationships are created from a settings page from the administration console.
+
+This plugin can not do relationships with users, you should test this excellent plugin made by scribu
+http://wordpress.org/extend/plugins/posts-to-posts/
 
 == Installation ==
 
 1. Download, unzip and upload to your WordPress plugins directory
 2. Activate the plugin within you WordPress Administration Backend
-3. Go to Settings > Relations and follow the steps on the [Simple Custom Types](http://redmine.beapi.fr/projects/show/relations-post-types) page.
+3. Go to Settings > Relations and enable relation between post type.
 
-TODO : Add some theme integration here
+= Display relations in its theme =
+
+Example, display 5 related pages in your single.php template :
+
+`
+<?php
+$related_pages_ids = rpt_get_object_relation($id_post, 'page');
+if ( count($related_pages_ids) >= 1 ) {
+	$related_pages = query_posts( array(
+		'post_type' => 'page',
+		'post_status' => 'publish',
+		'posts_per_page' => 5
+		'post__in' => $related_pages_ids,
+		'orderby' => 'post_date',
+		'order' => 'DESC',
+	) );
+
+	echo 'Related pages' . "\n";
+	echo '<ul>' . "\n";
+	foreach ( $related_pages as $post ) {
+		echo '<li><a href="'.get_permalink($post).'">'.get_the_title($post).'</a></li>' . "\n";
+	}
+	echo '</ul>' . "\n";
+}
+?>
+`
 
 == Screenshots ==
 
@@ -28,6 +65,13 @@ TODO : Add some theme integration here
 
 == Changelog ==
 
+* Version 1.2.4 : 
+	* Compatibility with WP 3.4
+* Version 1.2.3 :
+	* No released version
+* Version 1.2.2 : 
+	* Fix a potential error with PHP Opcode Cache
+	* Remove most recent tab, performance bad
 * Version 1.2.1 :
 	* Add query var with prefix "rel-" for each CPT allow filtering on URL
 * Version 1.2 :

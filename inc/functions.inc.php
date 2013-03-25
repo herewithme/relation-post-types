@@ -178,6 +178,11 @@ function rpt_get_objects_with_relations( $return_post_type = '', $comparaison_po
 	return $post_ids;
 }
 
+/**
+ * Function for get most used relation for a post type.
+ * Deprecated, performance are too bad...
+ *
+ */
 function rpt_get_objects_most_used( $return_post_type = '' ) {
 	global $wpdb;
 	
@@ -215,4 +220,3 @@ function rpt_get_objects_most_used( $return_post_type = '' ) {
 
 	return $results;
 }
-?>

@@ -98,4 +98,3 @@ function the_relations( $id = 0, $post_type, $before = '', $sep = ', ', $after =
 
 	echo apply_filters('the_relations', $relation_list, $post_type, $before, $sep, $after);
 }
-?>

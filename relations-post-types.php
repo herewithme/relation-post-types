@@ -1,18 +1,18 @@
 <?php
 /*
 Plugin Name: Relation Post Types
-Plugin URI: http://redmine.beapi.fr/projects/show/relations-post-types
-Description: Allow to build relations between 2 custom types objects.
+Plugin URI: http://wordpress.org/extend/plugins/relation-post-types/
+Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer, Nicolas Juen
 Author URI: http://www.beapi.fr
-Version: 1.2.1
+Version: 1.2.4
 Text Domain: relations-post-types
 Domain Path: /languages/
 Network: false
 
 ----
 
-Copyright 2010 Amaury Balmer (amaury@beapi.fr)
+Copyright 2012 Amaury Balmer (amaury@beapi.fr)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,13 +31,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ---
 
 TODO :
-	Core
-
-	Admin
-	
-	Extras
-	
-	Client
+	Allow registration of relation with an API code
+	Allow to export DB options to php files
+	Allow to hide options page with CONSTANT
+	Allow multiple selections (checkbox current) / Allow unique selection (select or autocompletion)
+	Allow metabox "Relations" that display relations for each contents.
+	Allow to merge relation into ONE metabox
+	Add an parameter to WP_Query for easier request
+	Add a shortcode for display related content
 */
 
 // Setup table name for relations
@@ -46,7 +47,7 @@ $wpdb->tables[] 		= 'posts_relations';
 $wpdb->posts_relations 	= $wpdb->prefix . 'posts_relations';
 
 // Folder name
-define ( 'RPT_VERSION', '1.2.1' );
+define ( 'RPT_VERSION', '1.2.4' );
 define ( 'RPT_OPTION',  'relations-post-types' );
 
 define ( 'RPT_URL', plugins_url('', __FILE__) );
@@ -90,4 +91,3 @@ function initRelationsPostTypes() {
 	// Widget
 	add_action( 'widgets_init', create_function('', 'return register_widget("RelationsPostTypes_Widget");') );
 }
-?>
