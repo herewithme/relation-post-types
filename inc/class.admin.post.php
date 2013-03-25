@@ -6,17 +6,15 @@ class RelationsPostTypes_Admin_Post {
 	 * @return boolean
 	 */
 	function __construct() {
-		// Save taxo datas
+		// Metabox
 		add_action( 'save_post', array(__CLASS__, 'save_post'), 10, 2 );
-		
-		// Write post box meta
 		add_action( 'add_meta_boxes', array(__CLASS__, 'add_meta_boxes'), 10, 2 );
-		
+
 		// The ajax action for the serach in boxes
 		add_action( 'wp_ajax_posttype-quick-search', array( __CLASS__, 'wp_ajax_posttype_quick_search' ) );
 		
 		// Register JS/CSS
-		add_action( 'admin_init', array( __CLASS__, 'admin_init') );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts') );
 		
 		return true;
 	}
@@ -27,10 +25,8 @@ class RelationsPostTypes_Admin_Post {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	public static function admin_init() {
-		global $pagenow;
-		
-		if ( in_array( $pagenow, array('post.php', 'post-new.php') ) ) {
+	public static function admin_enqueue_scripts( $hook ) {
+		if ( in_array( $hook, array('post.php', 'post-new.php') ) ) {
 			wp_enqueue_script ( 'rpt-admin-post', RPT_URL.'/ressources/js/admin-post.min.js', 'jquery', RPT_VERSION, true );
 			wp_localize_script( 'rpt-admin-post', 'rpt', array( 'noItems' => __( 'No results found.', 'relation-post-type' ) ) ); // Add javascript translation
 		}
@@ -150,49 +146,66 @@ class RelationsPostTypes_Admin_Post {
 	 * @author Amaury Balmer , Nicolas Juen
 	 */
 	public static function metabox( $object, $post_type ) {
+		// Take post type name from metabox args
 		$post_type_name = $post_type['args']->name;
+
+		// Current settings
+		$current_settings = get_option( RPT_OPTION.'-settings' );
+
+		// Mix with default
+		$current_settings = wp_parse_args( $current_settings, RelationsPostTypes_Base::get_default_settings() );
 
 		// Get current items for checked datas.
 		$current_items = rpt_get_object_relation( $object->ID );
-		if ( is_array($current_items) )
+		if ( is_array($current_items) ) {
 			$current_items = array_map( 'intval', $current_items );
+		}
 		
 		// Build args for walker
 		$args = array(
-			'nopaging' 			=> true,
 			'order' 			=> 'ASC',
 			'orderby' 			=> 'title',
 			'post_type' 		=> $post_type_name,
 			'post_status' 		=> 'publish',
-			'suppress_filters' 	=> true,
+			//'suppress_filters' 	=> true,
 			'update_post_term_cache' => false,
 			'update_post_meta_cache' => false,
 			'current_id' 		=> $object->ID,
 			'current_items'		=> $current_items
 		);
+
+		// Quantity ?
+		if ( (int) $current_settings['quantity'] > 0 ) {
+			$args['posts_per_page'] = (int) $current_settings['quantity'];
+		} else {
+			$args['posts_per_page'] = 0;
+			$args['nopaging'] = true;
+		}
 		
 		// For the same post type, exclude current !
-		if ( $object->post_type == $post_type_name )
+		if ( $object->post_type == $post_type_name ) {
 			$args['post__not_in'] = array($object->ID);
+		}
 		
 		// Default ?
-		if ( isset( $post_type['args']->_default_query ) )
+		if ( isset( $post_type['args']->_default_query ) ) {
 			$args = array_merge($args, (array) $post_type['args']->_default_query );
-
-		$get_posts = new WP_Query;
-		$posts = $get_posts->query( $args );
-		if ( ! $get_posts->post_count ) {
-			echo '<p>' . __( 'No results found.', 'relation-post-types' ) . '</p>';
-			return;
 		}
 
-		// The current ab selected
+		// Get datas
+		$items_query = new WP_Query( $args );
+		if ( !$items_query->have_posts() ) {
+			echo '<p>' . __( 'No results found.', 'relation-post-types' ) . '</p>';
+			return false;
+		}
+
+		// The current tab selected
 		$current_tab = 'all';
 		if ( isset( $_REQUEST[$post_type_name . '-tab'] ) && in_array( $_REQUEST[$post_type_name . '-tab'], array('all', 'search') ) ) {
 			$current_tab = $_REQUEST[$post_type_name . '-tab'];
 		}
-		
-		// check if we are seraching
+
+		// check if we are searching
 		if ( ! empty( $_REQUEST['quick-search-posttype-' . $post_type_name] ) ) {
 			$current_tab = 'search';
 		}
@@ -202,6 +215,8 @@ class RelationsPostTypes_Admin_Post {
 
 		// Get metabox HTML
 		include( RPT_DIR . 'views/admin/metabox.php' );
+
+		return true;
 	}
 
 	/**
@@ -244,8 +259,10 @@ class RelationsPostTypes_Admin_Post {
 					's' 			=> $query,
 					'post__not_in' 	=> array( $post_id ),
 				));
-				if ( ! have_posts() )
-					return;
+				if ( ! have_posts() ) {
+					return false;
+				}
+				
 				while ( have_posts() ) {
 					the_post();
 					if ( 'markup' == $response_format ) {

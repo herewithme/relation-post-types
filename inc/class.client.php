@@ -13,6 +13,45 @@ class RelationsPostTypes_Client {
 		
 		// Delete post
 		add_action( 'delete_post', array(__CLASS__, 'delete_post') );
+
+		// WP_Query
+		add_action( 'posts_results', array(__CLASS__, 'posts_results'), 10, 2 );
+	}
+
+	public static function posts_results( $posts, $query ) {
+		$current_items = $query->get('current_items');
+		if( !empty($current_items) && $query->get('posts_per_page') > 0 && $query->get('nopaging') == false ) {
+			// Get IDS from objects
+			$post_ids = wp_list_pluck( $posts, 'ID' );
+
+			// Get ID not in two arrays
+			$post_ids_to_get = array_diff($current_items, $post_ids);
+			
+			// Get objects
+			$_posts = self::get_objects( $post_ids_to_get, $query->query_vars );
+
+			// Merge additional posts
+			$posts = array_merge( $_posts, $posts );
+		}
+
+		return $posts;
+	}
+
+	public static function get_objects( $ids = array(), $args = array() ) {
+		if ( empty($ids) ) {
+			return array();
+		}
+
+		// Customize some element for args
+		$args['suppress_filters'] = true;
+		$args['post__in'] = $ids;
+		$args['nopaging'] = true;
+		unset($args['posts_per_page'], $args['current_items']);
+
+		// Get posts
+		$get_query = new WP_Query($args);
+
+		return $get_query->posts;
 	}
 	
 	/**

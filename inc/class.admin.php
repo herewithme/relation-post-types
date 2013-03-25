@@ -39,6 +39,12 @@ class RelationsPostTypes_Admin {
 		
 		// Current relations
 		$current_relations = get_option( RPT_OPTION );
+
+		// Current settings
+		$current_settings = get_option( RPT_OPTION.'-settings' );
+
+		// Mix with default
+		$current_settings = wp_parse_args( $current_settings, RelationsPostTypes_Base::get_default_settings() );
 		
 		// Get metabox HTML
 		include( RPT_DIR . 'views/admin/settings.php' );
@@ -60,14 +66,23 @@ class RelationsPostTypes_Admin {
 		if ( isset($_POST['save-relations']) ) {
 			check_admin_referer( 'save-relations-settings' );
 			
+			// Save relations
 			$relations = array();
-			foreach( $_POST['relations'] as $post_type => $values ) {
+			foreach( $_POST['rpt_relations'] as $post_type => $values ) {
 				foreach( $values as $sub_post_type => $value )
 					$relations[$post_type][] = $sub_post_type;
 			}
-			
-			add_settings_error( RPT_OPTION.'-main', RPT_OPTION.'-main', __('Relations updated with success !', 'relations-post-types'), 'updated' );;
 			update_option( RPT_OPTION, $relations );
+
+			// Cleanup data
+			$_POST['rpt_settings'] = stripslashes_deep($_POST['rpt_settings']);
+
+			// Save settings
+			$new_settings = wp_parse_args( $_POST['rpt_settings'], RelationsPostTypes_Base::get_default_settings() );
+			update_option( RPT_OPTION.'-settings', $new_settings );
+
+			// Notify users
+			add_settings_error( RPT_OPTION.'-main', RPT_OPTION.'-main', __('Relations updated with success !', 'relations-post-types'), 'updated' );
 
 			return true;
 		}

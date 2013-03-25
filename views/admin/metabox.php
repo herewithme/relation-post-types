@@ -8,7 +8,7 @@
 		<ul id="<?php echo $post_type_name; ?>checklist" class="list:<?php echo $post_type_name; ?> categorychecklist form-no-clear">
 			<?php
 			$args['walker'] = $walker;
-			$checkbox_items = walk_nav_menu_tree( $posts, 0, (object) $args );
+			$checkbox_items = walk_nav_menu_tree( $items_query->posts, 0, (object) $args );
 			echo $checkbox_items;
 			?>
 		</ul>

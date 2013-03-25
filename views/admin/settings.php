@@ -5,11 +5,12 @@
 	<div class="message updated">
 		<p><?php _e('<strong>Warning :</strong> Check or uncheck relations between 2 post types will not delete relations on DB.', 'relations-post-types'); ?></p>
 	</div>
-	
-	<p><?php _e('Instructions for use: lines correspond to each page of edition of the post type, you can show the box of relations with others contents by checking the columns of your choice', 'relations-post-types'); ?></p>
-	
+
 	<form action="" method="post">
 		<div id="col-container">
+			<h3><?php _e("Relations between post types", 'relations-post-types'); ?></h3>
+			<p><?php _e('Instructions for use: lines correspond to each page of edition of the post type, you can show the box of relations with others contents by checking the columns of your choice', 'relations-post-types'); ?></p>
+			
 			<table class="widefat tag fixed" cellspacing="0">
 				<thead>
 					<tr>
@@ -61,7 +62,7 @@
 										if ( !isset($current_relations[$line_post_type->name]) )
 											$current_relations[$line_post_type->name] = array();
 											
-										echo '<input type="checkbox" name="relations['.$line_post_type->name.']['.$post_type->name.']" value="1" '.checked( true, in_array( $post_type->name, (array) $current_relations[$line_post_type->name] ), false ).' />' . "\n";
+										echo '<input type="checkbox" name="rpt_relations['.$line_post_type->name.']['.$post_type->name.']" value="1" '.checked( true, in_array( $post_type->name, (array) $current_relations[$line_post_type->name] ), false ).' />' . "\n";
 									//} else {
 									//	echo '-' . "\n";
 									//}
@@ -72,10 +73,21 @@
 					<?php endforeach; ?>
 				</tbody>
 			</table>
+
+			<h3><?php _e("Other settings", 'relations-post-types'); ?></h3>
+			<table class="form-table">
+				<tr valign="top">
+					<th scope="row"><label for="rpt-quantity"><?php _e("Items quantity on metabox", 'relations-post-types'); ?></label></th>
+					<td>
+						<input name="rpt_settings[quantity]" type="text" id="rpt-quantity" value="<?php echo esc_attr($current_settings['quantity']); ?>" class="regular-text" />
+						<span class="description"><?php _e('If your writing page is very slow, you should probably reduce the number of elements. Enter zero for no limit.', 'relations-post-types'); ?></span>
+					</td>
+				</tr>
+			</table>
 		
 			<p class="submit">
 				<?php wp_nonce_field( 'save-relations-settings' ); ?>
-				<input class="button-primary" name="save-relations" type="submit" value="<?php _e('Save relations', 'relations-post-types'); ?>" />
+				<input class="button-primary" name="save-relations" type="submit" value="<?php _e('Save settings', 'relations-post-types'); ?>" />
 			</p>
 		</form>
 	</div><!-- /col-container -->
