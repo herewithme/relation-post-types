@@ -69,6 +69,7 @@ if ( count($related_pages_ids) >= 1 ) {
 	* Compatibility with WP 3.5
 	* Refactory code: use static methods, use views, new conding standards
 	* Add setting for set quantity items
+	* Improve performance for rpt_get_objects_most_used()
 * Version 1.2.4 : 
 	* Compatibility with WP 3.4
 * Version 1.2.3 :

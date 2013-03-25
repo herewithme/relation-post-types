@@ -189,43 +189,36 @@ function rpt_get_objects_with_relations( $return_post_type = '', $comparaison_po
 
 /**
  * Function for get most used relation for a post type.
- * Deprecated, performance are too bad...
  *
  */
 function rpt_get_objects_most_used( $return_post_type = '' ) {
 	global $wpdb;
 	
 	// Get IDs for both post type
- 	$ids = $wpdb->get_col( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type = %s", $return_post_type) );	
+	$ids = $wpdb->get_col( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type = %s", $return_post_type) );	
+	if ( $ids == false ) {
+		return false;
+	}
 	
 	// Build SQL Where
-	$where = '';
-	$i = 0;
-	foreach( $ids as $id ) {
-		if( $i != 0 )
-			$where .= " OR ";
-		$where .= " object_id_1 = $id OR object_id_2 = $id";
-		$i++;
-	}
-	
+	$where = " object_id_1 IN (".implode(',', $ids).") OR object_id_2 IN (".implode(',', $ids).")";
+		
 	// Get ID of relations
-	$count1 = $wpdb->get_results("SELECT object_id_1 as post_id,count(object_id_1) as count
-		FROM $wpdb->posts_relations WHERE $where GROUP BY object_id_1 ORDER BY count DESC" , ARRAY_A);
-	
-	$count2 = $wpdb->get_results("SELECT object_id_2 as post_id,count(object_id_2) as count
-		FROM $wpdb->posts_relations WHERE $where GROUP BY object_id_2 ORDER BY count DESC", ARRAY_A);
-
-	$results = array();
-	
-	foreach( $count1 as $count ) {
-		$results[] = $count['post_id'];
-	}
-	foreach( $count2 as $count ) {
-		$results[] = $count['post_id'];
-	}
-	
-	// Just have the right ids
-	$results = array_unique( $results );
+	$results = $wpdb->get_col("
+		SELECT post_id, count
+		FROM (
+			(SELECT object_id_1 AS post_id, count(object_id_1) AS count
+				FROM $wpdb->posts_relations
+				WHERE $where 
+				GROUP BY object_id_1)
+			UNION ALL 
+			(SELECT object_id_2 AS post_id, count(object_id_2) AS count
+				FROM $wpdb->posts_relations
+				WHERE $where 
+				GROUP BY object_id_2)
+		) AS tables
+		GROUP BY post_id 
+		ORDER BY count DESC");
 
 	return $results;
 }
