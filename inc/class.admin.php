@@ -69,8 +69,9 @@ class RelationsPostTypes_Admin {
 			// Save relations
 			$relations = array();
 			foreach( $_POST['rpt_relations'] as $post_type => $values ) {
-				foreach( $values as $sub_post_type => $value )
+				foreach( $values as $sub_post_type => $value ) {
 					$relations[$post_type][] = $sub_post_type;
+				}
 			}
 			update_option( RPT_OPTION, $relations );
 

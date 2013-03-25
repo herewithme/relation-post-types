@@ -167,11 +167,11 @@ class RelationsPostTypes_Admin_Post {
 			'orderby' 			=> 'title',
 			'post_type' 		=> $post_type_name,
 			'post_status' 		=> 'publish',
-			//'suppress_filters' 	=> true,
 			'update_post_term_cache' => false,
 			'update_post_meta_cache' => false,
 			'current_id' 		=> $object->ID,
-			'current_items'		=> $current_items
+			'current_items'		=> $current_items,
+			'rpt_query'			=> true
 		);
 
 		// Quantity ?
@@ -248,6 +248,7 @@ class RelationsPostTypes_Admin_Post {
 			$args['current_id'] = $post_id;
 		}
 		
+		$matches = array();
 		if ( preg_match('/quick-search-(posttype|taxonomy)-([a-zA-Z_-]*\b)/', $type, $matches) ) {
 			if ( 'posttype' == $matches[1] && get_post_type_object( $matches[2] ) ) {
 				query_posts(array(
@@ -258,11 +259,13 @@ class RelationsPostTypes_Admin_Post {
 					'orderby' 		=> 'title',
 					's' 			=> $query,
 					'post__not_in' 	=> array( $post_id ),
+					'rpt_query'		=> true
 				));
+				
 				if ( ! have_posts() ) {
 					return false;
 				}
-				
+
 				while ( have_posts() ) {
 					the_post();
 					if ( 'markup' == $response_format ) {
