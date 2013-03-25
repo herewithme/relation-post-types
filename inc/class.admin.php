@@ -10,7 +10,7 @@ class RelationsPostTypes_Admin {
 	 * @author Amaury Balmer
 	 */
 	public function __construct() {
-		self::admin_url = admin_url( 'options-general.php?page='.admin_slug );
+		self::$admin_url = admin_url( 'options-general.php?page='.self::admin_slug );
 		
 		// Register hooks
 		add_action( 'admin_init', array( __CLASS__, 'admin_init') );
@@ -24,7 +24,7 @@ class RelationsPostTypes_Admin {
 	 * @author Amaury Balmer
 	 */
 	public static function add_menu() {
-		add_options_page( __('Relations post types', 'relations-post-types'), __('Relations', 'relations-post-types'), 'manage_options', admin_slug, array( __CLASS__, 'page_settings' ) );
+		add_options_page( __('Relations post types', 'relations-post-types'), __('Relations', 'relations-post-types'), 'manage_options', self::admin_slug, array( __CLASS__, 'page_settings' ) );
 	}
 	
 	/**
@@ -35,7 +35,7 @@ class RelationsPostTypes_Admin {
 	 */
 	public static function page_settings() {
 		// Show error messages
-		settings_errors( RPT_OPTION.'-main' );
+		// settings_errors( RPT_OPTION.'-main' );
 		
 		// Current relations
 		$current_relations = get_option( RPT_OPTION );
@@ -74,8 +74,8 @@ class RelationsPostTypes_Admin {
 		
 		return false;
 	}
-	
-		/**
+
+	/**
 	 * Check $_GET/$_POST/$_FILES for Export/Import
 	 * 
 	 * @return boolean

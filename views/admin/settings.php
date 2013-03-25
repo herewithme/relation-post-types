@@ -84,7 +84,7 @@
 <div class="wrap">
 	<h2><?php _e("Relations post types : Export/Import", 'relations-post-types'); ?></h2>
 	
-	<a class="button" href="<?php echo wp_nonce_url(self::admin_url.'&amp;action=export_config_rpt', 'export-config-rpt'); ?>"><?php _e("Export config file", 'relations-post-types'); ?></a>
+	<a class="button" href="<?php echo wp_nonce_url(self::$admin_url.'&amp;action=export_config_rpt', 'export-config-rpt'); ?>"><?php _e("Export config file", 'relations-post-types'); ?></a>
 	<a class="button" href="#" id="toggle-import_form"><?php _e("Import config file", 'relations-post-types'); ?></a>
 	<script type="text/javascript">
 		jQuery("#toggle-import_form").click(function(event) {
@@ -93,7 +93,7 @@
 		});
 	</script>
 	<div id="import_form" class="hide-if-js">
-		<form action="<?php echo self::admin_url ; ?>" method="post" enctype="multipart/form-data">
+		<form action="<?php echo self::$admin_url ; ?>" method="post" enctype="multipart/form-data">
 			<p>
 				<label><?php _e("Config file", 'relations-post-types'); ?></label>
 				<input type="file" name="config_file" />

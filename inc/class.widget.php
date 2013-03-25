@@ -12,7 +12,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			'relation-posttypes', 
 			__('Relations Content Widget', 'relations-post-types'), 
@@ -31,7 +31,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 		global $wp_query;
 
 		extract( $args );
@@ -95,7 +95,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		foreach ( array('title', 'post_type', 'orderby', 'order', 'number') as $val ) {
 			$instance[$val] = strip_tags( $new_instance[$val] );
@@ -110,7 +110,7 @@ class RelationsPostTypes_Widget extends WP_Widget {
 	 * @return void
 	 * @author Amaury Balmer
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 		$defaults = array(
 			'title' 	=> __('Related content', 'relations-post-types'),
 			'post_type' => 'all',
