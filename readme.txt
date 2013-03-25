@@ -4,8 +4,8 @@ Contributors: momo360modena,Rahe
 Donate link: http://www.beapi.fr/donate/
 Tags: custom, post types, cms, post type, relation, connections, custom post types, many-to-many, relationships
 Requires at least: 3.0
-Tested up to: 3.4.1
-Stable tag: 1.2.4
+Tested up to: 3.5.1
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ if ( count($related_pages_ids) >= 1 ) {
 
 == Changelog ==
 
+* Version 1.3 : 
+	* Compatibility with WP 3.5
+	* Refactory code: use static methods, use views, new conding standards
+	* Add setting for set quantity items
 * Version 1.2.4 : 
 	* Compatibility with WP 3.4
 * Version 1.2.3 :
