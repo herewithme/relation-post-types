@@ -7,6 +7,9 @@ class RelationsPostTypes_Client {
 	 * @author Amaury Balmer
 	 */
 	public function __construct() {
+		// Translation
+		add_filter( 'init', array(__CLASS__, 'init') );
+
 		// Add query vars, for allow filtering with URL
 		add_filter( 'query_vars', array(__CLASS__, 'query_vars') );
 		add_action( 'parse_query', array(__CLASS__, 'parse_query') );
@@ -16,6 +19,11 @@ class RelationsPostTypes_Client {
 
 		// WP_Query
 		add_action( 'posts_results', array(__CLASS__, 'posts_results'), 10, 2 );
+	}
+
+	// Load translations
+	public static function init() {	
+		load_plugin_textdomain('relations-post-types', false, basename(RPT_DIR) . '/languages');
 	}
 
 	public static function posts_results( $posts, $query ) {

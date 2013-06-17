@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/relation-post-types/
 Description: Allow to build relations between 2 custom types.
 Author: Amaury Balmer, Nicolas Juen
 Author URI: http://www.beapi.fr
-Version: 1.3
+Version: 1.3.1
 Text Domain: relations-post-types
 Domain Path: /languages/
 Network: false
@@ -47,7 +47,7 @@ $wpdb->tables[] 		= 'posts_relations';
 $wpdb->posts_relations 	= $wpdb->prefix . 'posts_relations';
 
 // Folder name
-define ( 'RPT_VERSION', '1.3' );
+define ( 'RPT_VERSION', '1.3.1' );
 define ( 'RPT_OPTION',  'relations-post-types' );
 
 define('RPT_URL', plugin_dir_url ( __FILE__ ));
@@ -74,9 +74,6 @@ register_deactivation_hook( __FILE__, array('RelationsPostTypes_Base', 'deactiva
 
 add_action( 'plugins_loaded', 'init_relations_post_types' );
 function init_relations_post_types() {
-	// Load translations
-	load_plugin_textdomain('relations-post-types', false, basename(RPT_DIR) . '/languages');
-	
 	// Client
 	new RelationsPostTypes_Client();
 	
