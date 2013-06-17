@@ -42,8 +42,4 @@ class RelationsPostTypes_Base {
 	 * @author Amaury Balmer
 	 */
 	public static function deactivate() {}
-
-	public static function get_default_settings() {
-		return array('quantity' => 0);
-	}
 }

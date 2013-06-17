@@ -42,9 +42,6 @@ class RelationsPostTypes_Admin {
 
 		// Current settings
 		$current_settings = get_option( RPT_OPTION.'-settings' );
-
-		// Mix with default
-		$current_settings = wp_parse_args( $current_settings, RelationsPostTypes_Base::get_default_settings() );
 		
 		// Get metabox HTML
 		include( RPT_DIR . 'views/admin/settings.php' );
@@ -76,11 +73,12 @@ class RelationsPostTypes_Admin {
 			update_option( RPT_OPTION, $relations );
 
 			// Cleanup data
-			$_POST['rpt_settings'] = stripslashes_deep($_POST['rpt_settings']);
+			if ( isset($_POST['rpt_settings']['quantity']) ) {
+				$_POST['rpt_settings']['quantity'] = array_map("intval", $_POST['rpt_settings']['quantity']);
+			}
 
 			// Save settings
-			$new_settings = wp_parse_args( $_POST['rpt_settings'], RelationsPostTypes_Base::get_default_settings() );
-			update_option( RPT_OPTION.'-settings', $new_settings );
+			update_option( RPT_OPTION.'-settings', $_POST['rpt_settings'] );
 
 			// Notify users
 			add_settings_error( RPT_OPTION.'-main', RPT_OPTION.'-main', __('Relations updated with success !', 'relations-post-types'), 'updated' );

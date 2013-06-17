@@ -1,3 +1,8 @@
+<?php
+// don't load directly
+if ( !defined('ABSPATH') )
+	die('-1');
+?>
 <div class="wrap">
 	<?php screen_icon(); ?>
 	<h2><?php _e("Relations post types : Settings", 'relations-post-types'); ?></h2>
@@ -74,15 +79,24 @@
 				</tbody>
 			</table>
 
-			<h3><?php _e("Other settings", 'relations-post-types'); ?></h3>
+			<h3><?php _e("Items quantity on metabox", 'relations-post-types'); ?></h3>
+			<p class="description"><?php _e('If your writing page is very slow, you should probably reduce the number of elements. Enter zero for no limit.', 'relations-post-types'); ?></p>
 			<table class="form-table">
-				<tr valign="top">
-					<th scope="row"><label for="rpt-quantity"><?php _e("Items quantity on metabox", 'relations-post-types'); ?></label></th>
-					<td>
-						<input name="rpt_settings[quantity]" type="text" id="rpt-quantity" value="<?php echo esc_attr($current_settings['quantity']); ?>" class="regular-text" />
-						<span class="description"><?php _e('If your writing page is very slow, you should probably reduce the number of elements. Enter zero for no limit.', 'relations-post-types'); ?></span>
-					</td>
-				</tr>
+				<?php
+				foreach ( get_post_types( array(), 'objects' ) as $post_type ) :
+					if ( !$post_type->show_ui || empty($post_type->labels->name) ) {
+						continue;
+					}
+
+					$qty_value = ( isset($current_settings['quantity'][$post_type->name]) ) ? (int) $current_settings['quantity'][$post_type->name] : 0;
+					?>
+					<tr valign="top">
+						<th scope="row"><label for="rpt-quantity"><?php echo esc_html($post_type->labels->name); ?></label></th>
+						<td>
+							<input name="rpt_settings[quantity][<?php echo esc_attr($post_type->name); ?>]" type="number" id="rpt-quantity" value="<?php echo esc_attr($qty_value); ?>" class="small-text" />
+						</td>
+					</tr>
+				<?php endforeach; ?>
 			</table>
 		
 			<p class="submit">

@@ -152,8 +152,8 @@ class RelationsPostTypes_Admin_Post {
 		// Current settings
 		$current_settings = get_option( RPT_OPTION.'-settings' );
 
-		// Mix with default
-		$current_settings = wp_parse_args( $current_settings, RelationsPostTypes_Base::get_default_settings() );
+		// Default value if not set
+		$qty_value = ( isset($current_settings['quantity'][$post_type_name]) ) ? (int) $current_settings['quantity'][$post_type_name] : 0;
 
 		// Get current items for checked datas.
 		$current_items = rpt_get_object_relation( $object->ID );
@@ -175,8 +175,8 @@ class RelationsPostTypes_Admin_Post {
 		);
 
 		// Quantity ?
-		if ( (int) $current_settings['quantity'] > 0 ) {
-			$args['posts_per_page'] = (int) $current_settings['quantity'];
+		if ( (int) $qty_value > 0 ) {
+			$args['posts_per_page'] = (int) $qty_value;
 		} else {
 			$args['posts_per_page'] = 0;
 			$args['nopaging'] = true;
@@ -211,7 +211,7 @@ class RelationsPostTypes_Admin_Post {
 		}
 
 		// Create the walker
-		$walker = new Walker_Relations_Checklist;
+		$walker = new Walker_Relations_Checklist();
 
 		// Get metabox HTML
 		include( RPT_DIR . 'views/admin/metabox.php' );
@@ -235,7 +235,7 @@ class RelationsPostTypes_Admin_Post {
 		
 		// Ad custom walker
 		if ( 'markup' == $response_format ) {
-			$args['walker'] = new Walker_Relations_Checklist;
+			$args['walker'] = new Walker_Relations_Checklist();
 		}
 		
 		if( (int) $post_id > 0 ) {
