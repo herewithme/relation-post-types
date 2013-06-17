@@ -1,4 +1,9 @@
 <?php
+// don't load directly
+if ( !defined('ABSPATH') )
+	die('-1');
+?>
+<?php
 if ( isset($title) )
 	echo $before_title . $title . $after_title;
 ?>

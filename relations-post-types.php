@@ -41,6 +41,10 @@ TODO :
 	Add a shortcode for display related content
 */
 
+// don't load directly
+if ( !defined('ABSPATH') )
+	die('-1');
+
 // Setup table name for relations
 global $wpdb;
 $wpdb->tables[] 		= 'posts_relations';
@@ -70,7 +74,7 @@ if ( is_admin() ) { // Call admin class
 
 // Activate/Desactive Relation Post Types
 register_activation_hook  ( __FILE__, array('RelationsPostTypes_Base', 'activate') );
-register_deactivation_hook( __FILE__, array('RelationsPostTypes_Base', 'deactivate') );
+// register_deactivation_hook( __FILE__, array('RelationsPostTypes_Base', 'deactivate') );
 
 add_action( 'plugins_loaded', 'init_relations_post_types' );
 function init_relations_post_types() {

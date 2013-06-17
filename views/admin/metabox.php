@@ -1,3 +1,8 @@
+<?php
+// don't load directly
+if ( !defined('ABSPATH') )
+	die('-1');
+?>
 <div id="posttype-<?php echo $post_type_name; ?>" class="categorydiv categorydivrpt">
 	<ul id="posttype-<?php echo $post_type_name; ?>-tabs" class="category-tabs">
 		<li <?php echo ( 'all' == $current_tab ? ' class="tabs"' : '' ); ?>><a class="nav-tab-link" href="#tabs-panel-posttype-<?php echo $post_type_name; ?>-all"><?php _e( 'View All', 'relation-post-types' ); ?></a></li>
