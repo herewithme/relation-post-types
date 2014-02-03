@@ -32,7 +32,7 @@ if ( !defined('ABSPATH') )
 		<p class="quick-search-wrap">
 			<input type="text" class="quick-search input-with-default-title" title="<?php esc_attr_e('Search'); ?>" value="<?php echo $searched; ?>" name="quick-search-posttype-<?php echo $post_type_name; ?>" />
 			<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" />
-			<?php submit_button( __( 'Search', 'relation-post-types' ), 'quick-search-submit button-secondary hide-if-js', 'submit', false, array( 'id' => 'submit-quick-search-posttype-' . $post_type_name ) ); ?>
+			<input type="submit" class="quick-search-submit button-secondary hide-if-js" id="submit-quick-search-posttype-<?php echo $post_type_name; ?>" value="<?php echo __( 'Search', 'relation-post-types' ); ?>" />
 		</p>
 
 		<ul id="<?php echo $post_type_name; ?>-search-checklist" class="list:<?php echo $post_type_name?> categorychecklist form-no-clear">
